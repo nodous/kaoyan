@@ -1,0 +1,249 @@
+/**index.wxss**/
+.header {
+  width: 100%;
+  display: flex;
+  background: #32c27d;
+  justify-content: center;
+  /* align-items: center; */
+  height: 168rpx;
+}
+.headerBox {
+  width: 50%;
+  margin-top: 71rpx;
+}
+.demo-col{
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+.footer {
+  width: 100%;
+  height: calc(100vh - 168rpx);
+}
+.page-section{
+  width: 100%;
+  height: 100%;
+}
+.swiper-item{
+  display: block;
+  height: 100%;
+  overflow-y: auto;
+} 
+swiper  {
+  height: 100%;
+}
+.imgSwiper {
+  width:100%;
+  height: 320rpx;
+}
+.navImg {
+  width: 100%;
+  height: 100%;
+}
+.subject {
+  width: 96%;
+  position: relative;
+  margin: 0 2%;
+  margin-top: -10rpx;
+  height: 135rpx;
+  border-radius: 4rpx;
+  overflow: hidden;
+  background: white;
+  z-index: 200;
+  box-shadow:0rpx 0 4rpx #d8d7d7, 0px 0 4rpx #d8d7d7,0 0rpx 0rpx rgb(0, 0, 0), 0 0rpx 6rpx #d8d7d7; /*底边阴影*/  
+}
+.subjectType {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 26rpx 0;
+}
+.subjectImg {
+  width: 50rpx;
+  height: 50rpx;
+}
+.subjectFont {
+  font-size: 24rpx;
+  color: #000;
+}
+.cell-panel-demo1 {
+  display: block;
+  width: 96%;
+  margin: 0 2%;
+  margin-top: 28rpx;
+}
+.musicPic {
+  width:246rpx;
+  height: 246rpx;
+}
+.musicBox {
+  position: relative;
+  overflow: hidden;
+  width:246rpx;
+  border:1rpx solid #f5f5f5;
+}
+.musicStart {
+  width: 70rpx;
+  height: 70rpx;
+  position: absolute;
+  left:50%;
+  top:50%;
+  transform: translate(-50%, -50%);
+}
+.musicStart1 {
+  width: 40rpx;
+  height: 40rpx;
+  position: absolute;
+  right:7%;
+  bottom:6%;
+}
+.musicWords {
+  position: absolute;
+  width:100%;
+  bottom: 20rpx;
+  text-align: center;
+  font-size: 24rpx;
+  color: white;
+}
+.musicWords1 {
+  font-size: 20rpx;
+}
+.musicFather1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40rpx;
+}
+.musicClassify {
+  width:94%;
+  margin-left:6%;
+  height:117rpx;
+  background:#f5f5f5;
+  margin-bottom:10rpx;
+}
+.tuijian {
+  font-size: 32rpx;
+  font-weight: 600;
+  width:100%;
+  margin: 30rpx 0;
+  text-align: center;
+  letter-spacing: 10rpx;
+}
+.personImg {
+  margin-left:12rpx;
+  width:121rpx;
+  height:119rpx;
+}
+.newMusicBox {
+   margin-left: 30rpx;
+   margin-top: 30rpx;
+}
+.newMusic {
+  font-size: 28rpx;
+}
+.areYouLike {
+  font-size: 21rpx;
+  color: #ababab;
+}
+
+.myPage {
+  width: 90%;
+  margin: 20rpx 5%;
+  font-family: 'OpenSans-Bold';
+  font-size: 30rpx;
+  color: rgb(95, 93, 93);
+}
+.userInfoImg {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  border: 1rpx solid rgb(226, 221, 221);
+}
+.iconImg {
+  width: 40rpx;
+  height: 40rpx;
+}
+.typeChange {
+  display: inline-block;
+  vertical-align: top;
+}
+.qiandaoP {
+  margin-top: -100rpx;
+
+}
+.fright {
+  width: 70rpx;
+  height:70rpx;
+}
+.qiandao {
+  width:70rpx;
+  text-align: center;
+  font-size: 30rpx;
+}
+.dengji {
+  width: 80rpx;
+  background: rgb(228, 223, 223);
+  border-radius: 20rpx;
+  font-size: 20rpx;
+  height: 30rpx;
+  margin-top: 6rpx;
+  margin-left:15rpx;
+  font-weight: 500;
+  color: rgb(168, 163, 163);
+  text-align: center;
+}
+.box {
+  margin:60rpx 0;
+  font-size: 29rpx; 
+}
+
+.quanParent {
+  width: 88%;
+  height:100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin: 0 6%;
+}
+.quanImg {
+  width: 70rpx;
+  height:70rpx;
+  margin-top: 6rpx;
+  border-radius: 8rpx;
+  display: block;
+}
+.onePerson {
+  padding: 30rpx 0;
+  border-bottom: 1rpx solid rgb(218, 209, 209);
+}
+.name {
+  color: #32c27d;
+  display: inline-block;
+  font-size: 28rpx;
+  margin-right: 10rpx;
+}
+.words {
+  display: inline-block;
+  font-size: 26rpx;
+  color: rgb(110, 105, 105);
+}
+.time {
+   font-size: 24rpx;
+   margin-top:4rpx;
+   color: rgb(151, 144, 144);
+}
+.guanzhu{
+  width:100rpx;
+  background: #32c27d;
+  border-radius: 20rpx;
+  font-size: 26rpx;
+  text-align: center;
+  padding:4rpx 8rpx;
+  color: #0a5775;
+  margin-top: 16rpx;
+}
+.talkingAbout {
+  margin: 10rpx 0;
+  font-size: 28rpx;
+  color: #000;
+
+}

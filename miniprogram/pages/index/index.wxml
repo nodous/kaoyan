@@ -1,0 +1,187 @@
+<!--index.wxml-->
+<view class="container1">
+  <view class="header">
+     <view class="headerBox">
+        <i-row i-class="demo-row">
+          <i-col wx:for="{{projectList}}" wx:key="index" span="8" style="{{curIndex == index ? 'font-size: 36rpx': ''}}" i-class="demo-col">{{item}}</i-col>
+      </i-row>
+     </view>
+  </view>
+  <view class="footer">
+    <view class="page-section page-section-spacing swiper">
+      <swiper vertical="{{vertical}}" bindchange="swiperChange" current="{{cur}}"> 
+        <block>
+          <swiper-item>
+          <!-- 我的页面 -->
+             <view class="myPage">
+                <view>
+                   <image src='../../img/tx.jpg' class="userInfoImg"></image>
+                   <i-row>
+                     <i-col span="18">
+                       <view class="typeChange">宁静哥哥~</view>
+                       <image src='../../img/xuexi.png' class="iconImg typeChange"></image>
+                       <view class="typeChange dengji">lv.1</view>
+                     </i-col>
+                     <i-col span="6">
+                       <view class="qiandaoP">
+                         <image src='../../img/qindao1.png' class="fright"></image>
+                          <image src='../../img/qindao.png' hidden="{{true}}" class="fright"></image>
+                          <view class="qiandao">签到</view>
+                       </view>
+                     </i-col>
+                   </i-row>
+                   <view class="box">
+                     <i-row>
+                        <i-col span="18">
+                          <view>简介：</view>
+                          <view>这个作者很懒，没留编辑接口都没留下！！！</view>
+                        </i-col>
+                      </i-row>
+                   </view>
+                   
+                </view>
+             </view>
+          </swiper-item>
+          <swiper-item>
+            <view class="swiper-item {{item}}">
+              <!-- 轮播图 -->
+              <view class="imgSwiper">
+                <swiper indicator-dots="true"  autoplay='true' interval="6000" circular="true"  vertical="{{vertical}}" indicator-color="rgba(255,255,255,0.1)" 
+    indicator-active-color="rgba(255,255,255,0.6)"> 
+                  <block wx:for="{{navImage}}" wx:key="index">
+                    <swiper-item>
+                      <view class="swiper-item {{item}}">
+                         <image src='{{item}}' mode="aspectFill" class="navImg"></image>
+                      </view>
+                    </swiper-item>
+                  </block>
+                </swiper>
+              </view>
+              <!-- 学科分类 -->
+              <view class="subject">
+                <i-row>
+                   <i-col span="4" wx:for="{{subject}}" wx:key="index">
+                      <view class="subjectType">
+                        <view>
+                          <image src='{{item.img}}' class="subjectImg"></image>
+                          <view class="subjectFont">{{item.words}}</view>
+                        </view>
+                      </view>
+                   </i-col>
+                   
+                </i-row>
+              </view>
+              <!-- 歌曲页面 -->
+              <view class="cell-panel-demo1">
+                <i-row>
+                  <i-col span="8">
+                     <view class="musicFather">
+                       <view class="musicBox">
+                         <image src='../../img/p10.png' mode="aspectFill" class="musicPic"></image> 
+                         <image src='../../img/start.png' mode="aspectFill" class="musicStart"></image> 
+                         <view class="musicWords">一边学一边听</view>
+                      </view>
+                    </view>
+                  </i-col>
+                  <i-col span="16">
+                      <i-row>
+                         <i-col span= '24'>
+                          <view class="musicClassify">
+                            <i-row>
+                              <i-col span='17'>
+                                <view class="newMusicBox">
+                                  <view class="newMusic">新音乐推荐</view> 
+                                  <view class="areYouLike">枯燥的音乐怎么能缺少音乐！</view> 
+                                </view>
+                              </i-col>
+                              <i-col span='7'>
+                                 <image src='../../img/p3.png' mode="aspectFill" class="personImg"></image>
+                              </i-col>
+                            </i-row> 
+                          </view>
+                         </i-col>
+                         <i-col span="24">
+                            <view class="musicClassify">
+                              <i-row>
+                                <i-col span='17'>
+                                  <view class="newMusicBox">
+                                    <view class="newMusic">历史音乐推荐</view> 
+                                    <view class="areYouLike">枯燥的音乐怎么能缺少音乐！</view> 
+                                  </view>
+                                </i-col>
+                                <i-col span='7'>
+                                  <image src='../../img/p6.png' mode="aspectFill" class="personImg"></image>
+                                </i-col>
+                              </i-row>
+                            </view>
+                         </i-col>
+                      </i-row>
+                  </i-col>
+                </i-row>
+              </view>
+              <!-- 推荐学习 -->
+              <view class='tuijian'>为你推荐学习</view>
+              <view>
+                <i-row>
+                  <i-col span="8">
+                    <view class="musicFather1">
+                       <view>
+                         <view class="musicBox">
+                            <image src='../../img/p1.png' mode="aspectFill" class="musicPic"></image> 
+                            <image src='../../img/enter.png' mode="aspectFill" class="musicStart1"></image> 
+                          </view>
+                          <view class="musicWords1">今日推荐</view>
+                       </view>
+                       
+                    </view>
+                  </i-col>
+                  <i-col span="8" wx:for="{{learnList}}" wx:key="index">
+                    <view class="musicFather1">
+                       <view>
+                         <view class="musicBox">
+                            <image src='{{item.img}}' mode="aspectFill" class="musicPic"></image> 
+                            <image src='../../img/enter.png' mode="aspectFill" class="musicStart1"></image> 
+                          </view>
+                          <view class="musicWords1">{{item.words}}</view>
+                       </view>
+                       
+                    </view>
+                  </i-col>
+                </i-row>
+              </view>
+            </view>
+          </swiper-item>
+          <!-- 吐槽鼓励圈 -->
+          <swiper-item>
+            <view class="quanParent">
+              <view class="onePerson" wx:for="[0,0]" wx:key="*this">
+                 <i-row>
+                   <i-col span="3">
+                     <image src='../../img/p6.png' mode="aspectFill" class="quanImg"></image>
+                   </i-col>
+                   <i-col span="21">
+                     <view>
+                        <i-row>
+                          <i-col span="17">
+                             <view class="name">缘分天空</view>
+                             <view class="words">分享文字：</view>
+                             <view class="time">2109年3月12日</view>
+                          </i-col>
+                          <i-col span="4">
+                             <view class="guanzhu">+ 关注</view>
+                          </i-col>
+                        </i-row>
+                     </view>
+                     <view class="talkingAbout">2012年的时候朱时茂和80后女演员传出“新闻”，但是他的老婆范旭霞却马上出来支持丈夫，为风口浪尖的老茂灭了火。但是此后的朱时茂并没有改变“助人为乐”的爱好，2017年和今年依然被拍到他的照片，虽然不知道他的妻子还会不会出来“救火”，但是各位网友是否也觉得老茂老师的“吻别”只是“男闺蜜”或者“爱护小辈”那么简单呢？</view>
+                   </i-col>
+                 </i-row>
+              </view>
+            </view>
+          </swiper-item>
+
+
+        </block>
+      </swiper>
+    </view>
+  </view>
+</view>

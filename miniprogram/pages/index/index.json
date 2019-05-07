@@ -1,0 +1,13 @@
+{
+"navigationBarTitleText": "NoticeBar 首页",
+"usingComponents": {
+  "i-tab-bar": "../../dist/tab-bar/index",
+  "i-tab-bar-item": "../../dist/tab-bar-item/index",
+  "i-row": "../../dist/row/index",
+  "i-col": "../../dist/col/index",
+  "i-tabs": "../../dist/tabs/index",
+  "i-tab": "../../dist/tab/index",
+  "i-panel": "../../dist/panel/index",
+  "i-notice-bar": "../../dist/notice-bar/index"
+ }
+}
