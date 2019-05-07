@@ -109,6 +109,15 @@ Page({
         console.log('2122'+JSON.stringify(res.result)) // 3
       })
       .catch(console.error)
+    wx.cloud.callFunction({
+      // 云函数名称
+      name: 'login',
+      // 传给云函数的参数
+    })
+      .then(res => {
+        console.log('2122' + JSON.stringify(res)) // 3
+      })
+      .catch(console.error)
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,

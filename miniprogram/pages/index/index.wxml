@@ -15,21 +15,30 @@
           <!-- 我的页面 -->
              <view class="myPage">
                 <view>
-                   <image src='../../img/tx.jpg' class="userInfoImg"></image>
-                   <i-row>
-                     <i-col span="18">
-                       <view class="typeChange">宁静哥哥~</view>
-                       <image src='../../img/xuexi.png' class="iconImg typeChange"></image>
-                       <view class="typeChange dengji">lv.1</view>
-                     </i-col>
-                     <i-col span="6">
-                       <view class="qiandaoP">
-                         <image src='../../img/qindao1.png' class="fright"></image>
-                          <image src='../../img/qindao.png' hidden="{{true}}" class="fright"></image>
-                          <view class="qiandao">签到</view>
-                       </view>
-                     </i-col>
-                   </i-row>
+                   <view class="userInfoImg">
+                      <!-- <image src='../../img/tx.jpg' class="userInfoImg"></image> -->
+                      <open-data type="userAvatarUrl" ></open-data>
+                   </view>
+                  <view style="margin-top:16rpx;">
+                      <i-row>
+                        <i-col span="18">
+                          <view class="typeChange">
+                              <open-data type="userNickName" ></open-data>
+                          </view>
+
+                          <!-- <view>宁静哥哥~</view> -->
+                          <image src='../../img/xuexi.png' style="margin-left:6rpx;" class="iconImg typeChange"></image>
+                          <view class="typeChange dengji">lv.1</view>
+                        </i-col>
+                        <i-col span="6">
+                          <view class="qiandaoP">
+                            <image src='../../img/qindao1.png' class="fright"></image>
+                              <image src='../../img/qindao.png' hidden="{{true}}" class="fright"></image>
+                              <view class="qiandao">签到</view>
+                          </view>
+                        </i-col>
+                      </i-row>
+                   </view>
                    <view class="box">
                      <i-row>
                         <i-col span="18">
