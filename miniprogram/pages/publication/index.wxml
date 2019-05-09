@@ -1,0 +1,9 @@
+<view>
+<view class="container1">
+  <view class="header">
+     <view class="headerBox">
+             发表文字
+     </view>
+  </view>
+</view>
+</view>
