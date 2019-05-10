@@ -247,3 +247,21 @@ swiper  {
   color: #000;
 
 }
+.talkingAbout {
+  margin: 10rpx 0;
+  font-size: 28rpx;
+  color: #000;
+
+}
+.sendMessage {
+  position: fixed;
+  right: 3%;
+  top: 3%;
+  width:97rpx;
+  height:54rpx;
+  border-radius:23rpx;
+  text-align:center;
+  line-height: 54rpx;
+  font-size: 30rpx;
+  background-color:rgb(26, 248, 248);
+}

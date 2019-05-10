@@ -1,0 +1,35 @@
+.header {
+  width: 92%;
+  display: flex;
+  position: relative;
+  background: #32c27d;
+  /* justify-content: center; */
+  /* align-items: center; */
+  padding: 0 4%;
+  height: 168rpx;
+}
+.headerBox {
+ position: absolute;
+ bottom: 12%;
+ left:4%;
+ font-size: 36rpx;
+}
+
+textarea {
+  width:96%;
+  padding:20rpx 2%;
+  font-size: 28rpx;
+  color:rgb(182, 173, 173);
+}
+.wordsBox {
+  margin-top: 68rpx;
+}
+.sendMyMessage {
+  width: 120rpx;
+  height:64rpx;
+  font-size: 28rpx;
+  line-height: 60rpx;
+  text-align: center;
+  background: #32c27d;
+  color: white;
+}
