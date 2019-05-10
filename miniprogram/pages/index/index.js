@@ -5,22 +5,22 @@ Page({
   data: {
     cur: 1,
     curIndex: 1, //当前的索引
-    projectList: ['我的','学习呀','吐槽圈'],
+    projectList: ['我的', '学习呀', '吐槽圈'],
     projuectIndex: 1,
     background: [
-      'demo-text-1', 
-      'demo-text-2', 
+      'demo-text-1',
+      'demo-text-2',
       'demo-text-3'
     ],
     navImage: [
-      '../../img/1.jpg', 
-      '../../img/2.jpg', 
-      '../../img/3.jpg', 
-      '../../img/4.jpg', 
-      '../../img/5.jpg', 
+      '../../img/1.jpg',
+      '../../img/2.jpg',
+      '../../img/3.jpg',
+      '../../img/4.jpg',
+      '../../img/5.jpg',
       '../../img/6.jpg',
     ],
-    subject:[
+    subject: [
       {
         img: '../../img/ty.png',
         words: '体育'
@@ -45,7 +45,7 @@ Page({
         img: '../../img/ls.png',
         words: '历史'
       }
-      
+
     ],
     learnList: [
       {
@@ -126,7 +126,7 @@ Page({
     });
   },
   //事件处理函数
-  bindViewTap: function() {
+  bindViewTap: function () {
     // wx.navigateTo({
     //   url: '../logs/logs'
     // })
