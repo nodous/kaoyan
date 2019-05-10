@@ -6,4 +6,12 @@
      </view>
   </view>
 </view>
+<view style='position:relative;top:0;left:0;width:100%;'>
+  <ad unit-id="adunit-ea2e9a48d5a801f5"></ad>
+</view>  
+<view class="wordsBox">
+     <textarea bindfocus="getFocus" bindblur="getFocus" bindinput="bindinput" maxlength="-1" value='{{value}}'></textarea>
+     <button class="sendMyMessage" bindtap='sendMyMessage' style="{{value.length == 0 || value =='吐槽？我们上...' ? 'background:#9cf0c7;color:#e1f8ed' : ''}}">发表</button>
+  </view>
+
 </view>

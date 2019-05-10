@@ -49,6 +49,7 @@
                    </view>
                    
                 </view>
+                <ad unit-id="adunit-ea2e9a48d5a801f5"></ad>
              </view>
           </swiper-item>
           <swiper-item>
@@ -158,43 +159,42 @@
                   </i-col>
                 </i-row>
               </view>
+              <ad unit-id="adunit-4291833fbe632cef"></ad>
             </view>
           </swiper-item>
           <!-- 吐槽鼓励圈 -->
           <swiper-item>
             <view class="quanParent">
-            <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button>
+              <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button>
+              <button open-type="contact" bindcontact="handleContact">客服啊</button>
 
-              <view class="onePerson" wx:for="[0,0]" wx:key="*this">
+              <view class="onePerson" wx:for="{{tucaoList}}" wx:for-index="index" wx:for-item="item" wx:key="index">
                  <i-row>
                    <i-col span="3">
-                     <image src='../../img/p6.png' mode="aspectFill" class="quanImg"></image>
+                     <image src='{{item.img}}' mode="aspectFill" class="quanImg"></image>
                    </i-col>
                    <i-col span="21">
                      <view>
                         <i-row>
                           <i-col span="17">
-                             <view class="name">缘分天空</view>
+                             <view class="name">{{item.name}}</view>
                              <view class="words">分享文字：</view>
-                             <view class="time">2109年3月12日</view>
+                             <view class="time">{{item.time}}</view>
                           </i-col>
                           <i-col span="4">
                              <view class="guanzhu">+ 关注</view>
                           </i-col>
                         </i-row>
                      </view>
-                     <view class="talkingAbout">2012年的时候朱时茂和80后女演员传出“新闻”，但是他的老婆范旭霞却马上出来支持丈夫，为风口浪尖的老茂灭了火。但是此后的朱时茂并没有改变“助人为乐”的爱好，2017年和今年依然被拍到他的照片，虽然不知道他的妻子还会不会出来“救火”，但是各位网友是否也觉得老茂老师的“吻别”只是“男闺蜜”或者“爱护小辈”那么简单呢？</view>
+                     <view class="talkingAbout">{{item.message}}</view>
                    </i-col>
                  </i-row>
               </view>
-              <view class="sendMessage">
-                吐槽
-              </view>
+              <i-load-more loading="{{ false }}" />
+              <navigator class="sendMessage" url="/pages/publication/index" hover-class="navigator-hover">吐槽</navigator>
             </view>
           </swiper-item>
-
         </block>
-
       </swiper>
     </view>
   </view>
