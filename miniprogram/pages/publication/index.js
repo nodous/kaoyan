@@ -26,15 +26,19 @@ Page({
     })
   },
   sendMyMessage() {
+    var _this = this
     if (this.data.value != 0 || value != '吐槽？我们上...'){
-      
       const db = wx.cloud.database()
       // const todos = db.collection('userPublishing')
       db.collection('userPublishing').add({
         // data 字段表示需新增的 JSON 数据
         data: {
           // _id: 'todo-identifiant-aleatoire', // 可选自定义 _id，在此处场景下用数据库自动分配的就可以了
-          message: 'learn cloud database',
+          message: _this.data.value,
+          nickName: app.globalData.userInfo.nickName,
+          city: app.globalData.userInfo.province+'-'+app.globalData.userInfo.city,
+          avatarUrl: app.globalData.userInfo.avatarUrl,
+          gender: app.globalData.userInfo.gender
         },
         success(res) {
           // res 是一个对象，其中有 _id 字段标记刚创建的记录的 id

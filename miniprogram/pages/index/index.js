@@ -1,12 +1,17 @@
 //index.js
+const { $Toast } = require('../../dist/base/index');
+const util = require('../../utils/util.js');
 //获取应用实例
 const app = getApp()
 Page({
   data: {
-    cur: 1,
-    curIndex: 1, //当前的索引
+    cur:0,
+    curIndex: 0, //当前的索引
     projectList: ['我的', '学习呀', '吐槽圈'],
     projuectIndex: 1,
+    scrollTop: 0,
+    pageNum: 0,
+    loading: false,
     background: [
       'demo-text-1',
       'demo-text-2',
@@ -69,6 +74,7 @@ Page({
         words: '政治提升'
       },
     ],
+    userInfo: '',
     tucaoList: [
       {
         img: '../../img/tx.jpg',
@@ -111,6 +117,36 @@ Page({
       current: detail.key
     });
   },
+  getToLower(ev){
+    var nowNum = this.data.pageNum + 10;
+    var _this = this
+    this.setData({
+      loading: true
+    })
+    setTimeout(()=>{
+      wx.cloud.callFunction({
+        name: 'getMessage',
+        data: {
+          context: nowNum
+        }
+      })
+        .then(res => {
+          // console.log('2122' + JSON.stringify(res.result))
+          _this.setData({
+            tucaoList: this.data.tucaoList.concat(res.result.data),
+            pageNum: nowNum,
+            loading: false
+          })
+        })
+        .catch(err =>{
+          $Toast({
+            content: err,
+            type: 'error'
+          });
+        })
+    },1000)
+     console.log('到底拉')
+  },
   swiperChange(e) {
     let current = e.detail.current;
     let source = e.detail.source
@@ -132,28 +168,23 @@ Page({
     // })
   },
   onLoad: function () {
-    // wx.cloud.callFunction({
-    //   // 云函数名称
-    //   name: 'add',
-    //   // 传给云函数的参数
-    //   data: {
-    //     a: 1,
-    //     b: 2,
-    //   },
-    // })
-    //   .then(res => {
-    //     console.log('2122'+JSON.stringify(res.result)) // 3
-    //   })
-    //   .catch(console.error)
-    // wx.cloud.callFunction({
-    //   // 云函数名称
-    //   name: 'login',
-    //   // 传给云函数的参数
-    // })
-    //   .then(res => {
-    //     console.log('2122' + JSON.stringify(res)) // 3
-    //   })
-    //   .catch(console.error)
+    var TIME = util.formatTime(new Date());
+    console.log(TIME)
+    var _this = this
+    //获取特定吐槽圈数据
+    wx.cloud.callFunction({
+      name: 'getMessage',
+      data: {
+        context: 0
+      }
+    })
+      .then(res => {
+        // console.log('2122'+JSON.stringify(res.result))
+        _this.setData({
+          tucaoList: res.result.data
+        })
+      })
+      .catch(console.error)
     wx.getSetting({
       success(res) {
         if (res.authSetting['scope.userInfo']) {
@@ -163,19 +194,51 @@ Page({
               console.log(res.userInfo)
               var str = JSON.stringify(res.userInfo);
               app.globalData.userInfo = res.userInfo
+              _this.setData({
+                userInfo: res.userInfo
+              })
             }
           })
         } else {
-          console.log('没有授权')
+          console.log(app.globalData.userInfo)
+          // $Toast({
+          //   content: "请授权页面",
+          //   type: 'error'
+          // });
         }
       }
     })
   },
   bindGetUserInfo: function (e) {
-    console.log(e)
-    app.globalData.userInfo = e.detail.userInfo;
-    var str = JSON.stringify(e.detail.userInfo)
+    var _this = this
+    var TIME = util.formatTime(new Date());
+    console.log(TIME)
     app.globalData.userInfo = e.detail.userInfo
+    wx.cloud.callFunction({
+      name: 'bindUserInfo',
+    })
+      .then(res => {
+        console.log('000' + JSON.stringify(res.result.data.length))
+        if (res.result.data.length == 0) {
+          const db = wx.cloud.database()
+          // const todos = db.collection('userPublishing')
+          db.collection('userInfo').add({
+            // data 字段表示需新增的 JSON 数据
+            data: {
+              // _id: 'todo-identifiant-aleatoire', // 可选自定义 _id，在此处场景下用数据库自动分配的就可以了
+              message: _this.data.value,
+              gender: app.globalData.userInfo.gender,
+              level: 1,
+              time: TIME
+            },
+            success(res) {
+              // res 是一个对象，其中有 _id 字段标记刚创建的记录的 id
+              console.log(res)
+            }
+          })
+        }
+      })
+      .catch(console.error)
   },
   handleContact(e) {
     console.log(e.path)
