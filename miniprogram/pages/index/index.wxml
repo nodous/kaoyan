@@ -187,7 +187,7 @@
                           <i-col span="17">
                              <view class="name">{{item.nickName}}</view>
                              <view class="words">分享文字：</view>
-                             <view class="time">{{item.time}}201213</view>
+                             <view class="time">{{item.time}}</view>
 
                              <!-- <view class="time">{{item.time}}</view> -->
                           </i-col>
