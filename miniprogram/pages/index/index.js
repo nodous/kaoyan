@@ -169,6 +169,14 @@ Page({
     var TIME = util.formatTime(new Date());
     console.log(TIME)
     var _this = this
+    //删除数据
+    // wx.cloud.callFunction({
+    //   name: 'remove',
+    // })
+    //   .then(res => {
+    //     console.log('2122'+JSON.stringify(res.result))
+    //   })
+    //   .catch(console.error)
     //获取特定吐槽圈数据
     wx.cloud.callFunction({
       name: 'getMessage',
@@ -177,7 +185,7 @@ Page({
       }
     })
       .then(res => {
-        console.log('2122'+JSON.stringify(res.result))
+        // console.log('2122'+JSON.stringify(res.result))
         _this.setData({
           tucaoList: res.result.data
         })
