@@ -14,7 +14,9 @@ Page({
   data: {
     title: '',
     answer: false,
-    seleceNum: ['A','B','C','D']
+    seleceNum: ['A','B','C','D'],
+    questionList: [],
+    answerList:[]
   },
 
   /**
@@ -33,18 +35,24 @@ Page({
     db.collection('politics').get({
       success(res) {
         var parse = JSON.parse(res.data[0].data)
+        console.log(parse.data[0].data)
+
         console.log(parse)
         _this.setData({
-          title: parse.category
+          title: parse.category, 
+          questionList: parse.data[0].data
         })
         // 输出 [{ "title": "The Catcher in the Rye", ... }]
-        console.log((res))
       }
     })
   },
-  touchStart() {
+  touchStart(e) {
+    var dataset = e.currentTarget.dataset;
     this.animation.rotate(0).scale(1).translate(0, 0).step();
-    this.setData({ animationData: this.animation.export() });
+    this.setData({ 
+      answerList: dataset,
+      animationData: this.animation.export() 
+      });
   },
   touchEnd(){
     this.animation.rotate(0).scale(1).translate(-1000, 0).step();

@@ -63,7 +63,7 @@
   width: 80%;
   left: 0rpx;
   min-height: 400rpx;
-  top:4%;
+  top:16%;
   background: rgba(68, 68, 68, 0.8);
   color: rgb(255, 255, 255);
   padding: 40rpx 0rpx 100rpx 0rpx;
