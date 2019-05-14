@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/learn/learn",
     "pages/index/index",
     "pages/publication/index"
   ],

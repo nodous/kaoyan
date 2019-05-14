@@ -1,0 +1,45 @@
+<!--miniprogram/pages/learn.wxml-->
+<view>
+  <view class="container1">
+    <view class="header">
+      <view class="headerBox">
+              {{title}}
+      </view>
+    </view>
+  </view>
+  <scroll-view scroll-y bindscrolltolower="getToLower" class="quanParent">
+     <view class="parent">
+      <view class="box">
+        <view class="kind">单选题</view>
+        <view class="title">1.中国人民抗日战争的胜利 ，谱写了中华民族不屈不挠抵抗外来侵略的壮丽史诗，彻底洗刷了近代以后中国屡遭外来侵略的民族耻辱，极大地增强了中华民族的自信心和自豪感。今年是中国人民抗日战争胜利（）</view>
+        <view class="answer">
+          <i-row>
+            <i-col span="24" wx:for="4">
+              <view class="class">国务院印发《关于深化考试招生制度改革的实施意见》，推进考试招生制度改革</view>
+              <view class="class">国务院印发《关于深化考试招生制度改革的实施意见》，推进考试招生制度改革</view>
+              <view class="class">国务院印发《关于深化考试招生制度改革的实施意见》，推进考试招生制度改革</view>
+              <view class="class">国务院印发《关于深化考试招生制度改革的实施意见》，推进考试招生制度改革</view>
+            </i-col>
+          </i-row>
+        </view>
+      <view class="tips">温馨提示：答案触摸显示，离开消失</view>
+
+      </view>
+      <view class="result" bindtouchstart="touchStart" bindtouchend="touchEnd">查看答案</view>
+      <view class="qusetionNum">1</view>
+     </view>
+     <view class="explain" wx:if="{{answer}}" animation="{{animationData}}">
+       <view class="title">介位同学，答案是C</view>
+       <view>
+         <i-row>
+            <i-col span="4">
+               <view class="title">解析</view>
+            </i-col>
+            <i-col span="20">
+               <view class="content">题肢①说法错误，因为有机绿色食品价格较高，不少市民望而却步，说明有机绿色食品的消费者应该不是很多。但其纯天然、绿色、无污染、健康，产品的质量优。因而有机绿色食品企业的品牌营销策略应强调产品的质量而不是抓住消费者从众心理，故排除。题肢④说法错误，因为价值决定价格，有机绿色食品的高价格的根本原因是凝结了更多的社会必要劳动时间，故排除。故本题答案选C。</view>
+            </i-col>
+          </i-row>
+       </view>
+     </view>
+  </scroll-view>
+</view>
