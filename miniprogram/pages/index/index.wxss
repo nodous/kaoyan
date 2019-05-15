@@ -1,4 +1,16 @@
 /**index.wxss**/
+.header {
+  width: 100%;
+  display: flex;
+  background: #32c27d;
+  justify-content: center;
+  /* align-items: center; */
+  height: 168rpx;
+}
+.headerBox {
+  width: 50%;
+  margin-top: 71rpx;
+}
 .demo-col{
     color: #fff;
     padding: 10px 0;

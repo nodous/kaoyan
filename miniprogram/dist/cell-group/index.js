@@ -1,33 +1,54 @@
-Component({
-    externalClasses: ['i-class'],
+import baseComponent from '../helpers/baseComponent'
+import classNames from '../helpers/classNames'
 
+baseComponent({
     relations: {
         '../cell/index': {
             type: 'child',
-            linked () {
-                this._updateIsLastCell();
+            observer() {
+                this.debounce(this.updateIsLastElement)
             },
-            linkChanged () {
-                this._updateIsLastCell();
-            },
-            unlinked () {
-                this._updateIsLastCell();
-            }
-        }
+        },
     },
+    properties: {
+        prefixCls: {
+            type: String,
+            value: 'wux-cell-group',
+        },
+        title: {
+            type: String,
+            value: '',
+        },
+        label: {
+            type: String,
+            value: '',
+        },
+    },
+    computed: {
+        classes() {
+            const { prefixCls } = this.data
+            const wrap = classNames(prefixCls)
+            const hd = `${prefixCls}__hd`
+            const bd = `${prefixCls}__bd`
+            const ft = `${prefixCls}__ft`
 
-    methods: {
-        _updateIsLastCell() {
-            let cells = this.getRelationNodes('../cell/index');
-            const len = cells.length;
-
-            if (len > 0) {
-                let lastIndex = len - 1;
-
-                cells.forEach((cell, index) => {
-                    cell.updateIsLastCell(index === lastIndex);
-                });
+            return {
+                wrap,
+                hd,
+                bd,
+                ft,
             }
-        }
-    }
-});
+        },
+    },
+    methods: {
+        updateIsLastElement() {
+            const elements = this.getRelationNodes('../cell/index')
+            if (elements.length > 0) {
+                const lastIndex = elements.length - 1
+                elements.forEach((element, index) => {
+                    element.updateIsLastElement(index === lastIndex)
+                })
+            }
+        },
+    },
+})

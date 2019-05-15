@@ -1,158 +1,190 @@
-Component({
-    externalClasses: ['i-class'],
-    properties : {
-        height : {
-            type : String,
-            value : '300'
-        },
-        itemHeight : {
-            type : Number,
-            value : 18
-        }
-    },
-    relations : {
-        '../index-item/index' : {
-            type : 'child',
-            linked(){
-                this._updateDataChange();
-            },
-            linkChanged () {
-                this._updateDataChange();
-            },
-            unlinked () {
-                this._updateDataChange();
-            }
-        }
-    },
-    data : {
-        scrollTop : 0,
-        fixedData : [],
-        current : 0,
-        timer : null,
-        startTop : 0,
-        itemLength : 0,
-        currentName : '',
-        isTouches : false
-    },
-    methods : {
-        loop(){},
-        _updateDataChange( ){
-            const indexItems = this.getRelationNodes('../index-item/index');
-            const len = indexItems.length;
-            const fixedData = this.data.fixedData;
-            /*
-             * 使用函数节流限制重复去设置数组内容进而限制多次重复渲染
-             * 暂时没有研究微信在渲染的时候是否会进行函数节流
-            */
-            if (len > 0) {
+import baseComponent from '../helpers/baseComponent'
+import classNames from '../helpers/classNames'
+import styleToCssString from '../helpers/styleToCssString'
 
-                if( this.data.timer ){
-                    clearTimeout( this.data.timer )
+baseComponent({
+    relations: {
+        '../index-item/index': {
+            type: 'child',
+            observer() {
+                this.debounce(this.updated)
+            },
+        },
+    },
+    properties: {
+        prefixCls: {
+            type: String,
+            value: 'wux-index',
+        },
+        height: {
+            type: [String, Number],
+            value: 300,
+            observer: 'updateStyle',
+        },
+        showIndicator: {
+            type: Boolean,
+            value: true,
+        },
+    },
+    data: {
+        scrollTop: 0,
+        sections: [],
+        moving: false,
+        current: 0,
+        currentName: '',
+        extStyle: '',
+    },
+    computed: {
+        classes() {
+            const { prefixCls } = this.data
+            const wrap = classNames(prefixCls)
+            const nav = `${prefixCls}__nav`
+            const navItem = `${prefixCls}__nav-item`
+            const indicator = `${prefixCls}__indicator`
+
+            return {
+                wrap,
+                nav,
+                navItem,
+                indicator,
+            }
+        },
+    },
+    methods: {
+        /**
+         * 更新样式
+         */
+        updateStyle(height = this.data.height) {
+            const extStyle = styleToCssString({ height })
+
+            if (extStyle !== this.data.extStyle) {
+                this.setData({
+                    extStyle,
+                })
+            }
+        },
+        /**
+         * 更新元素
+         */
+    	updated() {
+            const elements = this.getRelationNodes('../index-item/index')
+
+            if (elements.length > 0) {
+                elements.forEach((element, index) => {
+                    element.updated(index)
+                })
+
+                this.getNavPoints()
+            }
+
+            if (this.data.sections.length !== elements.length) {
+                this.setData({
+                    sections: elements.map((element) => element.data)
+                })
+            }
+        },
+        /**
+         * 设置当前激活的元素
+         */
+        setActive(current, currentName) {
+            if (current !== this.data.current || currentName !== this.data.currentName) {
+                const target = this.data.sections.filter((section) => section.index === current && section.name === currentName)[0]
+                if (target) {
                     this.setData({
-                        timer : null
+                        current,
+                        currentName,
+                        scrollTop: target.top,
                     })
                 }
-                
-                this.data.timer = setTimeout(()=>{
-                    const data = [];
-                    indexItems.forEach((item) => {
-                        if( item.data.name && fixedData.indexOf( item.data.name ) === -1 ){
-                            data.push(item.data.name);
-                            item.updateDataChange();
-                        }
-                    })
-                    this.setData({
-                        fixedData : data,
-                        itemLength : indexItems.length
-                    })
-                    //组件加载完成之后重新设置顶部高度
-                    this.setTouchStartVal();
-                },0);
-                this.setData({
-                    timer : this.data.timer
-                })
-                
+            }
+
+            this.triggerEvent('change', { index: current, name: currentName })
+        },
+        /**
+         * 手指触摸动作开始
+         */
+        onTouchStart(e) {
+            if (this.data.moving) return
+            const { index, name } = e.target.dataset
+            this.setActive(index, name)
+            this.setData({ moving: true })
+        },
+        /**
+         * 手指触摸后移动
+         */
+        onTouchMove(e) {
+            const target = this.getTargetFromPoint(e.changedTouches[0].pageY)
+
+            if (target !== undefined) {
+                const { index, name } = target.dataset
+                this.setActive(index, name)
             }
         },
-        handlerScroll(event){
-            const detail = event.detail;
-            const scrollTop = detail.scrollTop;
-            const indexItems = this.getRelationNodes('../index-item/index');
-            indexItems.forEach((item,index)=>{
-                let data = item.data;
-                let offset = data.top + data.height;
-                if( scrollTop < offset && scrollTop >= data.top ){
-                    this.setData({
-                        current : index,
-                        currentName : data.currentName
-                    })
+        /**
+         * 手指触摸动作结束
+         */
+        onTouchEnd(e) {
+            if (!this.data.moving) return
+            setTimeout(() => this.setData({ moving: false }), 300)
+        },
+        /**
+         * 滚动事件的回调函数
+         */
+        onScroll(e) {
+            if (this.data.moving) return
+            const { scrollTop } = e.detail
+            this.data.sections.forEach((section, index) => {
+                if (scrollTop < section.top + section.height && scrollTop >= section.top) {
+                    if (index !== this.data.current || section.name !== this.data.currentName) {
+                        this.setData({
+                            current: index,
+                            currentName: section.name,
+                        })
+                    }
                 }
             })
         },
-        getCurrentItem(index){
-            const indexItems = this.getRelationNodes('../index-item/index');
-            let result = {};
-            result = indexItems[index].data;
-            result.total = indexItems.length;
-            return result;
+        /**
+         * 获取右侧导航对应的坐标
+         */
+        getNavPoints() {
+            const className = `.${this.data.prefixCls}__nav-item`
+            wx
+                .createSelectorQuery()
+                .in(this)
+                .selectAll(className)
+                .boundingClientRect((rects) => {
+                    if (rects.filter((n) => !n).length) return
+                    this.setData({
+                        points: rects.map((n) => ({ ...n, offsets: [n.top, n.top + n.height] })),
+                    })
+                })
+                .exec()
         },
-        triggerCallback(options){
-            this.triggerEvent('change',options)
-        },
-        handlerFixedTap(event){
-            const eindex = event.currentTarget.dataset.index;
-            const item = this.getCurrentItem(eindex);
-            this.setData({
-                scrollTop : item.top,
-                currentName : item.currentName,
-                isTouches : true
-            })
-            this.triggerCallback({
-                index : eindex,
-                current : item.currentName
-            })
-        },
-        handlerTouchMove(event){
-            const data = this.data;
-            const touches = event.touches[0] || {};
-            const pageY = touches.pageY;
-            const rest = pageY - data.startTop;
-            let index = Math.ceil( rest/data.itemHeight );
-            index = index >= data.itemLength ? data.itemLength -1 : index;
-            const movePosition = this.getCurrentItem(index);
+        /**
+         * 根据坐标获得对应的元素
+         */
+        getTargetFromPoint(y) {
+            const { points } = this.data
+            let target
 
-           /*
-            * 当touch选中的元素和当前currentName不相等的时候才震动一下
-            * 微信震动事件
-           */
-            if( movePosition.name !== this.data.currentName ){
-                wx.vibrateShort();
+            for (let i = points.length - 1; i >= 0; i--) {
+                const [a, b] = points[i].offsets
+
+                // 1.判断是否为第一个元素且大于最大坐标点
+                // 2.判断是否为最后一个元素且小于最小坐标点
+                // 3.判断是否包含于某个坐标系内
+                if ((i === points.length - 1 && y > b) || (i === 0 && y < a) || (y >= a && y <= b)) {
+                    target = points[i]
+                    break
+                }
             }
 
-            this.setData({
-                scrollTop : movePosition.top,
-                currentName : movePosition.name,
-                isTouches : true
-            })
-
-            this.triggerCallback({
-                index : index,
-                current : movePosition.name
-            })
+            return target
         },
-        handlerTouchEnd(){
-            this.setData({
-                isTouches : false
-            })
-        },
-        setTouchStartVal(){
-            const className = '.i-index-fixed';
-            const query = wx.createSelectorQuery().in(this);
-            query.select( className ).boundingClientRect((res)=>{
-                this.setData({
-                    startTop : res.top
-                })
-            }).exec()
-        }
-    }
+    },
+    ready() {
+        this.updateStyle()
+        this.getNavPoints()
+    },
 })

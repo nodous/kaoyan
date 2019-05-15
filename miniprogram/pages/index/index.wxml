@@ -83,7 +83,7 @@
                 <i-row>
                    <i-col span="4" wx:for="{{subject}}" wx:key="index">
                       <view class="subjectType">
-                        <view>
+                        <view bindtap='onOpen1'>
                           <image src='{{item.img}}' class="subjectImg"></image>
                           <view class="subjectFont">{{item.words}}</view>
                         </view>
@@ -208,5 +208,6 @@
       </swiper>
     </view>
   </view>
+  <wux-cascader visible="{{ visible1 }}" default-value="{{ value1 }}" title="选择科目" options="{{ options1 }}" bind:close="onClose1"   bind:change="onChange1" />
   <i-toast id="toast" />
 </view>

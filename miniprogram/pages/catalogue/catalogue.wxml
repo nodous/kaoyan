@@ -1,0 +1,22 @@
+<!--miniprogram/pages/catalogue/catalogue.wxml-->
+<view>
+  <view class="container1">
+    <view class="header">
+      <view class="headerBox">
+             {{title}}
+      </view>
+    </view>
+  </view>
+  <scroll-view scroll-y bindscrolltolower="getToLower" class="quanParent">
+     <wux-accordion-group title="多大的" default-current="">
+        <wux-accordion title="{{'第'+(index+1)+'章 '+item.category}}" wx:for="{{dataList}}" wx:key="*this">
+             <view>sdsd</view>
+             <view>sdsd</view>
+             <view>sdsd</view>
+             <view>sdsd</view>
+             <view>sdsd</view>
+        </wux-accordion>
+      </wux-accordion-group>
+     <i-load-more tip="到底啦~" loading="{{ false }}" />
+  </scroll-view>
+</view>

@@ -17,3 +17,18 @@ textarea {
   background: #32c27d;
   color: white;
 }
+.header {
+  width: 92%;
+  display: flex;
+  position: relative;
+  background: #32c27d;
+  padding: 0 4%;
+  height: 168rpx;
+}
+
+.headerBox {
+ position: absolute;
+ bottom: 12%;
+ left:4%;
+ font-size: 36rpx;
+}

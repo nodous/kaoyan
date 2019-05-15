@@ -25,6 +25,7 @@
       <view class="result" bindtouchstart="touchStart" data-select="{{item.answer}}" data-explain="{{item.explain}}" bindtouchend="touchEnd">查看答案</view>
       <view class="qusetionNum">{{index+1}}</view>
      </view>
+     <i-load-more tip="到底啦~" loading="{{ false }}" />
   </scroll-view>
    <view class="explain" wx:if="{{answer}}" animation="{{animationData}}">
        <view class="title">介位同学，答案是{{answerList.select}}</view>

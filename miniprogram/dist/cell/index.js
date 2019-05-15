@@ -1,86 +1,172 @@
-const warn = (msg, getValue) => {
-    console.warn(msg);
-    console.log('接受到的值为：', getValue);
-};
+import baseComponent from '../helpers/baseComponent'
+import classNames from '../helpers/classNames'
 
-Component({
-    externalClasses: ['i-class'],
-
-    options: {
-        multipleSlots: true
-    },
-
+baseComponent({
     relations: {
         '../cell-group/index': {
-            type: 'parent'
-        }
+            type: 'parent',
+        },
     },
-
     properties: {
-        // 左侧标题
-        title: {
-            type: String
-        },
-        // 标题下方的描述信息
-        label: {
-            type: String
-        },
-        // 右侧内容
-        value: {
-            type: String
-        },
-        // 只有点击 footer 区域才触发 tab 事件
-        onlyTapFooter: {
-            type: Boolean
-        },
-        // 是否展示右侧箭头并开启尝试以 url 跳转
-        isLink: {
-            type: null,
-            value: ''
-        },
-        // 链接类型，可选值为 navigateTo，redirectTo，switchTab，reLaunch
-        linkType: {
+        prefixCls: {
             type: String,
-            value: 'navigateTo'
+            value: 'wux-cell',
+        },
+        disabled: {
+            type: Boolean,
+            value: false,
+        },
+        hoverClass: {
+            type: String,
+            value: 'default',
+        },
+        hoverStopPropagation: {
+            type: Boolean,
+            value: false,
+        },
+        hoverStartTime: {
+            type: Number,
+            value: 20,
+        },
+        hoverStayTime: {
+            type: Number,
+            value: 70,
+        },
+        lang: {
+            type: String,
+            value: 'en',
+        },
+        sessionFrom: {
+            type: String,
+            value: '',
+        },
+        sendMessageTitle: {
+            type: String,
+            value: '',
+        },
+        sendMessagePath: {
+            type: String,
+            value: '',
+        },
+        sendMessageImg: {
+            type: String,
+            value: '',
+        },
+        showMessageCard: {
+            type: Boolean,
+            value: false,
+        },
+        appParameter: {
+            type: String,
+            value: '',
+        },
+        thumb: {
+            type: String,
+            value: '',
+        },
+        title: {
+            type: String,
+            value: '',
+        },
+        label: {
+            type: String,
+            value: '',
+        },
+        extra: {
+            type: String,
+            value: '',
+        },
+        isLink: {
+            type: Boolean,
+            value: false,
+        },
+        openType: {
+            type: String,
+            value: 'navigateTo',
         },
         url: {
             type: String,
-            value: ''
-        }
+            value: '',
+        },
+        delta: {
+            type: Number,
+            value: 1,
+        },
     },
-
     data: {
-        isLastCell: true
+        isLast: false,
     },
+    computed: {
+        classes() {
+            const { prefixCls, hoverClass, isLast, isLink, disabled } = this.data
+            const wrap = classNames(prefixCls, {
+                [`${prefixCls}--last`]: isLast,
+                [`${prefixCls}--access`]: isLink,
+                [`${prefixCls}--disabled`]: disabled,
+            })
+            const hd = `${prefixCls}__hd`
+            const thumb = `${prefixCls}__thumb`
+            const bd = `${prefixCls}__bd`
+            const text = `${prefixCls}__text`
+            const desc = `${prefixCls}__desc`
+            const ft = `${prefixCls}__ft`
+            const hover = hoverClass && hoverClass !== 'default' ? hoverClass : `${prefixCls}--hover`
 
+            return {
+                wrap,
+                hd,
+                thumb,
+                bd,
+                text,
+                desc,
+                ft,
+                hover,
+            }
+        },
+    },
     methods: {
-        navigateTo () {
-            const { url } = this.data;
-            const type = typeof this.data.isLink;
-
-            this.triggerEvent('click', {});
-
-            if (!this.data.isLink || !url || url === 'true' || url === 'false') return;
-
-            if (type !== 'boolean' && type !== 'string') {
-                warn('isLink 属性值必须是一个字符串或布尔值', this.data.isLink);
-                return;
-            }
-
-            if (['navigateTo', 'redirectTo', 'switchTab', 'reLaunch'].indexOf(this.data.linkType) === -1) {
-                warn('linkType 属性可选值为 navigateTo，redirectTo，switchTab，reLaunch', this.data.linkType);
-                return;
-            }
-            wx[this.data.linkType].call(wx, {url});
-        },
-        handleTap () {
-            if (!this.data.onlyTapFooter) {
-                this.navigateTo();
+        onTap() {
+            if (!this.data.disabled) {
+                this.triggerEvent('click')
+                this.linkTo()
             }
         },
+        bindgetuserinfo(e) {
+            this.triggerEvent('getuserinfo', e.detail)
+        },
+        bindcontact(e) {
+            this.triggerEvent('contact', e.detail)
+        },
+        bindgetphonenumber(e) {
+            this.triggerEvent('getphonenumber', e.detail)
+        },
+        bindopensetting(e) {
+            this.triggerEvent('opensetting', e.detail)
+        },
+        onError(e) {
+            this.triggerEvent('error', e.detail)
+        },
+        linkTo() {
+            const { url, isLink, openType, delta } = this.data
+            const navigate = [
+                'navigateTo',
+                'redirectTo',
+                'switchTab',
+                'navigateBack',
+                'reLaunch',
+            ]
 
-        updateIsLastCell (isLastCell) {
-            this.setData({ isLastCell });
-        }
-    }
-});
+            // openType 属性可选值为 navigateTo、redirectTo、switchTab、navigateBack、reLaunch
+            if (!isLink || !url || !navigate.includes(openType)) {
+                return false
+            } else if (openType === 'navigateBack') {
+                return wx[openType].call(wx, { delta })
+            } else {
+                return wx[openType].call(wx, { url })
+            }
+        },
+        updateIsLastElement(isLast) {
+            this.setData({ isLast })
+        },
+    },
+})

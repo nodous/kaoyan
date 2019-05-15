@@ -10,6 +10,8 @@ Page({
     projectList: ['我的', '学习呀', '吐槽圈'],
     projuectIndex: 1,
     scrollTop: 0,
+    visible1: false,
+    value1: [],
     pageNum: 0,
     loading: false,
     background: [
@@ -102,6 +104,66 @@ Page({
       },
     ]
   },
+  onLoad: function () {
+    var TIME = util.formatTime(new Date());
+    // console.log(TIME)
+    var _this = this
+    const db = wx.cloud.database()
+    db.collection('menuPolitics').get({
+      success(res) {
+        var parse = JSON.parse(res.data[0].data)
+        console.log(parse.children)
+        _this.setData({
+          options1: parse.children
+        })
+      }
+    })
+    //删除数据
+    // wx.cloud.callFunction({
+    //   name: 'remove',
+    // })
+    //   .then(res => {
+    //     console.log('2122'+JSON.stringify(res.result))
+    //   })
+    //   .catch(console.error)
+    //获取特定吐槽圈数据
+    wx.cloud.callFunction({
+      name: 'getMessage',
+      data: {
+        context: 0
+      }
+    })
+      .then(res => {
+        // console.log('2122'+JSON.stringify(res.result))
+        _this.setData({
+          tucaoList: res.result.data
+        })
+      })
+      .catch(console.error)
+    wx.getSetting({
+      success(res) {
+        if (res.authSetting['scope.userInfo']) {
+          // 已经授权，可以直接调用 getUserInfo 获取头像昵称
+          wx.getUserInfo({
+            success: function (res) {
+              console.log(res.userInfo)
+              var str = JSON.stringify(res.userInfo);
+              app.globalData.userInfo = res.userInfo
+              _this.setData({
+                userInfo: res.userInfo
+              })
+            }
+          })
+        } else {
+          console.log(app.globalData.userInfo)
+          // $Toast({
+          //   content: "请授权页面",
+          //   type: 'error'
+          // });
+        }
+      }
+    })
+  },
   onShareAppMessage: function (res) {
     if (res.from === 'button') {
       // 来自页面内转发按钮
@@ -165,56 +227,20 @@ Page({
     //   url: '../logs/logs'
     // })
   },
-  onLoad: function () {
-    var TIME = util.formatTime(new Date());
-    console.log(TIME)
-    var _this = this
-    //删除数据
-    // wx.cloud.callFunction({
-    //   name: 'remove',
-    // })
-    //   .then(res => {
-    //     console.log('2122'+JSON.stringify(res.result))
-    //   })
-    //   .catch(console.error)
-    //获取特定吐槽圈数据
-    wx.cloud.callFunction({
-      name: 'getMessage',
-      data: {
-        context: 0
-      }
-    })
-      .then(res => {
-        // console.log('2122'+JSON.stringify(res.result))
-        _this.setData({
-          tucaoList: res.result.data
-        })
-      })
-      .catch(console.error)
-    wx.getSetting({
-      success(res) {
-        if (res.authSetting['scope.userInfo']) {
-          // 已经授权，可以直接调用 getUserInfo 获取头像昵称
-          wx.getUserInfo({
-            success: function (res) {
-              console.log(res.userInfo)
-              var str = JSON.stringify(res.userInfo);
-              app.globalData.userInfo = res.userInfo
-              _this.setData({
-                userInfo: res.userInfo
-              })
-            }
-          })
-        } else {
-          console.log(app.globalData.userInfo)
-          // $Toast({
-          //   content: "请授权页面",
-          //   type: 'error'
-          // });
-        }
-      }
-    })
+
+  onOpen1() {
+    console.log(111)
+    this.setData({ visible1: true })
   },
+  onClose1() {
+    this.setData({ 
+      visible1: false
+      })
+  },
+  onChange1(e) {
+    this.setData({ title1: e.detail.options.map((n) => n.label).join('/') })
+    console.log('onChange1', e.detail)
+  },  
   bindGetUserInfo: function (e) {
     var _this = this
     var TIME = util.formatTime(new Date());

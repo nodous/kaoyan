@@ -39,7 +39,7 @@ Page({
 
         console.log(parse)
         _this.setData({
-          title: parse.category, 
+          title: parse.data[0].title, 
           questionList: parse.data[0].data
         })
         // 输出 [{ "title": "The Catcher in the Rye", ... }]

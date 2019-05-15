@@ -1,1 +1,93 @@
-.i-cell{position:relative;padding:12px 15px;display:flex;background:#fff;align-items:center;line-height:1.4;font-size:14px;overflow:hidden}.i-cell::after{content:'';position:absolute;top:0;left:0;width:200%;height:200%;transform:scale(.5);transform-origin:0 0;pointer-events:none;box-sizing:border-box;border:0 solid #e9eaec;border-bottom-width:1px;left:15px;right:0}.i-cell-last::after{display:none}.i-cell-icon{margin-right:5px}.i-cell-icon:empty{display:none}.i-cell-bd{flex:1}.i-cell-text{line-height:24px;font-size:14px}.i-cell-desc{line-height:1.2;font-size:12px;color:#80848f}.i-cell-ft{position:relative;text-align:right;color:#495060}.i-cell-access .i-cell-ft{padding-right:13px}.i-cell-access .i-cell-ft::after{content:" ";display:inline-block;width:6px;height:6px;position:absolute;top:50%;right:2px;border-width:2px 2px 0 0;border-color:#dddee1;border-style:solid;transform:translateY(-50%) matrix(.71,.71,-.71,.71,0,0)}
+.wux-cell {
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  color: inherit!important;
+  background: 0 0!important;
+  font-size: inherit;
+  line-height: inherit;
+  text-align: inherit;
+  padding: 20rpx 30rpx;
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  background: #fff
+}
+.wux-cell:after {
+  position: static;
+  top: auto;
+  left: auto;
+  width: auto;
+  height: auto;
+  border: none;
+  border-radius: 0;
+  transform: none;
+  transform-origin: 0 0
+}
+.wux-cell:after {
+  content: " ";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 2rpx;
+  border-bottom: 2rpx solid #d9d9d9;
+  color: #d9d9d9;
+  transform-origin: 0 100%;
+  transform: scaleY(.5);
+  left: 30rpx
+}
+.wux-cell--last:after {
+  display: none
+}
+.wux-cell--hover {
+  background-color: #ececec!important
+}
+.wux-cell--disabled {
+  opacity: .3
+}
+.wux-cell__thumb {
+  display: block;
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 10rpx
+}
+.wux-cell__bd {
+  -ms-flex: 1;
+  flex: 1
+}
+.wux-cell__text {
+  text-align: left
+}
+.wux-cell__desc {
+  text-align: left;
+  line-height: 1.2;
+  font-size: 24rpx;
+  color: grey
+}
+.wux-cell__ft {
+  text-align: right;
+  color: grey
+}
+.wux-cell--access .wux-cell__ft {
+  padding-right: 26rpx;
+  position: relative
+}
+.wux-cell--access .wux-cell__ft:after {
+  content: " ";
+  display: inline-block;
+  height: 12rpx;
+  width: 12rpx;
+  border-width: 4rpx 4rpx 0 0;
+  border-color: #c8c8cd;
+  border-style: solid;
+  transform: matrix(.71,.71,-.71,.71,0,0);
+  position: relative;
+  top: -4rpx;
+  position: absolute;
+  top: 50%;
+  margin-top: -8rpx;
+  right: 4rpx
+}
