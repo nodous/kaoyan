@@ -1,7 +1,6 @@
 {
   "pages": [
     "pages/index/index",
-    
     "pages/catalogue/catalogue",
     "pages/learn/learn",
     "pages/publication/index"

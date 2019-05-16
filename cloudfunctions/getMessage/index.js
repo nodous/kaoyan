@@ -5,7 +5,7 @@ const db = cloud.database()
 exports.main = async (context) => {
   console.log(context)
   try {
-    return await db.collection('userPublishing').skip(context.context).limit(10).get()
+    return await db.collection('userPublishing').orderBy('time', 'desc').skip(context.context).limit(10).get()
   } catch (e) {
     console.error(e)
   }

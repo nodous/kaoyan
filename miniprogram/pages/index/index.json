@@ -1,6 +1,7 @@
 {
 "navigationBarTitleText": "NoticeBar 首页",
 "usingComponents": {
+  "wux-refresher": "../../dist/refresher/index",
   "wux-cell-group": "../../dist/cell-group/index",
   "wux-cell": "../../dist/cell/index",
   "wux-cascader": "../../dist/cascader/index",

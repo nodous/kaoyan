@@ -27,8 +27,10 @@
 .swiper-item{
   display: block;
   height: 100%;
+  width:100%;
   overflow-y: auto;
 } 
+
 swiper  {
   height: 100%;
 }
@@ -198,10 +200,13 @@ swiper  {
 }
 
 .quanParent {
-  width: 88%;
-  height:100%;
-  margin: 0 6%;
+  width:96%;
+height:100%;
+padding:0 2%;
+
 }
+
+
 .quanImg {
   width: 70rpx;
   height:70rpx;
@@ -210,6 +215,7 @@ swiper  {
   display: block;
 }
 .onePerson {
+  position: relative;
   padding: 30rpx 0;
   border-bottom: 1rpx solid rgb(218, 209, 209);
 }
@@ -287,4 +293,18 @@ swiper  {
   font-size: 30rpx;
   margin: 60rpx 0;
   text-align: center;
+}
+
+.weui-panel {
+height:100%;
+ width: 98%;
+  padding: 0 1%;
+position:relative;
+color:#333;
+-webkit-user-select:none;
+user-select:none;
+display: block;
+overflow-x:hidden;
+background-color:#f8f8f8;
+font-size:16px;
 }

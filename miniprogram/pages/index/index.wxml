@@ -13,6 +13,17 @@
         <block>
           <swiper-item>
           <!-- 我的页面 -->
+          <view>
+  <view wx:if="{{openGid}}" class='groupName'>
+    群名称：
+    <open-data type="groupName" open-gid="{{openGid}}"></open-data>
+  </view>
+  <view wx:else>
+    <button class='button' bindtap='clickReload'>点击加载群名称和群ID</button>
+  </view>
+  <view class='button'>{{openGid ? openGid : ' '}}</view>
+  <view>把这个页面在真机上分享到微信群，然后从群里点进来，再点击按钮就能获取群ID</view>
+</view>
               <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button>
              <view class="myPage">
                 <view>
@@ -175,7 +186,11 @@
           </swiper-item>
           <!-- 吐槽鼓励圈 -->
           <swiper-item>
+            <view class='weui-panel'>
             <scroll-view scroll-y bindscrolltolower="getToLower" class="quanParent">
+
+            <wux-refresher id="wux-refresher" bind:refresh="onRefresh">
+            <!-- <wux-refresher  class="quanParent" bind:pulling="onPulling" bind:refresh="onRefresh" scrollTop="{{scrollTop}}" bind:loadmore="getToLower"> -->
                 <view class="onePerson" wx:for="{{tucaoList}}" wx:for-index="index" wx:for-item="item" wx:key="index">
                  <i-row>
                    <i-col span="3">
@@ -200,9 +215,13 @@
                    </i-col>
                  </i-row>
               </view>
-              <i-load-more loading="{{ loading }}" />
-              <navigator class="sendMessage" url="/pages/publication/index" hover-class="navigator-hover">吐槽</navigator>
+            </wux-refresher>
+            <i-load-more loading="{{ loading }}" />
+
             </scroll-view>
+
+              <navigator class="sendMessage" url="/pages/publication/index" hover-class="navigator-hover">吐槽</navigator>
+          </view>
           </swiper-item>
         </block>
       </swiper>

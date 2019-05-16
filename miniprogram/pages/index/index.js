@@ -1,12 +1,13 @@
 //index.js
 const { $Toast } = require('../../dist/base/index');
+import { $stopWuxRefresher, $stopWuxLoader } from '../../dist/index'
 const util = require('../../utils/util.js');
 //获取应用实例
 const app = getApp()
 Page({
   data: {
-    cur: 1,
-    curIndex: 1, //当前的索引
+    cur: 2,
+    curIndex: 2, //当前的索引
     projectList: ['我的', '学习呀', '吐槽圈'],
     projuectIndex: 1,
     scrollTop: 0,
@@ -77,37 +78,31 @@ Page({
       },
     ],
     userInfo: '',
-    tucaoList: [
-      {
-        img: '../../img/tx.jpg',
-        message: '一点要好好学习历史，搞不定那天就穿越了',
-        time: '2019-2-17',
-        name: '金鱼哥'
-      },
-      {
-        img: '../../img/p7.png',
-        message: '我们学习中虽然苦，有许许多多的挫折，困难，等待着我们，所以我们要勇敢的面对困难，挑战困难，永不言败，那么成功离我们就不愿了，成功是要付出努力的，付出汗水，没有能随随便便成功的，所以我们应该付出不懈努力去学习。',
-        time: '2019-2-18',
-        name: '缘分天空'
-      },
-      {
-        img: '../../img/p10.png',
-        message: '我从小就怕黑，小时候学习不好就是因为不敢看黑板。',
-        time: '2019-2-18',
-        name: '大哥别杀我'
-      },
-      {
-        img: '../../img/p12.png',
-        message: '好好学习，天天处对象。',
-        time: '2019-2-18',
-        name: '小苗苗'
-      },
-    ]
+    tucaoList: []
+  },
+  clickReload: function () {
+    let that = this
+    app.getShareTiket(function (globalData) {
+      console.log('clickReload---globalData-->' + JSON.stringify(globalData))
+      that.setData({
+        openGid: globalData.openGid
+      })
+    })
   },
   onLoad: function () {
+    let _this = this
+    wx.showShareMenu({
+      //设为true，获取ShareTicket
+      withShareTicket: true
+    })
+    app.getShareTiket(function (globalData) {
+      console.log('clickReload---globalData-->' + JSON.stringify(globalData))
+      _this.setData({
+        openGid: globalData.openGid
+      })
+    })
     var TIME = util.formatTime(new Date());
     // console.log(TIME)
-    var _this = this
     const db = wx.cloud.database()
     db.collection('menuPolitics').get({
       success(res) {
@@ -127,6 +122,7 @@ Page({
     //   })
     //   .catch(console.error)
     //获取特定吐槽圈数据
+
     wx.cloud.callFunction({
       name: 'getMessage',
       data: {
@@ -135,6 +131,7 @@ Page({
     })
       .then(res => {
         // console.log('2122'+JSON.stringify(res.result))
+
         _this.setData({
           tucaoList: res.result.data
         })
@@ -174,13 +171,35 @@ Page({
       imageUrl: '../../img/url.png'
     }
   },
+  //下拉刷新事件
+  onRefresh() {
+    var _this = this
+    wx.cloud.callFunction({
+      name: 'getMessage',
+      data: {
+        context: 0
+      }
+    })
+      .then(res => {
+        // console.log('2122'+JSON.stringify(res.result))
+
+        _this.setData({
+          tucaoList: res.result.data,
+          pageNum: 0
+        })
+        $stopWuxRefresher()
+      })
+      .catch(console.error)
+  },
   handleChange({ detail }) {
     this.setData({
       current: detail.key
     });
   },
   getToLower(ev){
+    console.log("onLoadmore")
     var nowNum = this.data.pageNum + 10;
+    console.log("nowNum-"+ nowNum)
     var _this = this
     this.setData({
       loading: true
@@ -227,7 +246,6 @@ Page({
     //   url: '../logs/logs'
     // })
   },
-
   onOpen1() {
     console.log(111)
     this.setData({ visible1: true })
@@ -235,7 +253,7 @@ Page({
   onClose1() {
     this.setData({ 
       visible1: false
-      })
+    })
   },
   onChange1(e) {
     this.setData({ title1: e.detail.options.map((n) => n.label).join('/') })
@@ -250,7 +268,7 @@ Page({
       name: 'bindUserInfo',
     })
       .then(res => {
-        console.log('000' + JSON.stringify(res.result.data.length))
+        console.log('000' + JSON.stringify(res))
         if (res.result.data.length == 0) {
           const db = wx.cloud.database()
           // const todos = db.collection('userPublishing')

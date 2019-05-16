@@ -26,7 +26,23 @@ Page({
       value: e.detail.value
     })
   },
+
   sendMyMessage() {
+    wx.checkSession({
+      success: function (res) {
+        console.log(res, '登录未过期')
+        wx.showToast({
+          title: '登录未过期啊',
+        })
+      },
+      fail: function (res) {
+        console.log(res, '登录过期了')
+        wx.showModal({
+          title: '提示',
+          content: '你的登录信息过期了，请重新登录',
+        })
+      }
+    })
     var _this = this
     var TIME = util.formatTime(new Date());
     if (this.data.value != 0 && this.data.value != '吐槽？我们上...') {
@@ -46,7 +62,7 @@ Page({
         success(res) {
           // res 是一个对象，其中有 _id 字段标记刚创建的记录的 id
              wx.navigateTo({
-                 url: '/pages/index/index?id=1&page=4',  //跳转页面的路径，可带参数 ？隔开，不同参数用 & 分隔；相对路径，不需要.wxml后缀
+                 url: '/pages/index/index?page=2',  //跳转页面的路径，可带参数 ？隔开，不同参数用 & 分隔；相对路径，不需要.wxml后缀
              })
           console.log(res)
         }
