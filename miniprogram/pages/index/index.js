@@ -6,11 +6,12 @@ const util = require('../../utils/util.js');
 const app = getApp()
 Page({
   data: {
-    cur: 2,
-    curIndex: 2, //当前的索引
+    cur: 1,
+    curIndex: 1, //当前的索引
     projectList: ['我的', '学习呀', '吐槽圈'],
     projuectIndex: 1,
     scrollTop: 0,
+    login: true, //是否登陆过
     visible1: false,
     value1: [],
     pageNum: 0,
@@ -91,17 +92,29 @@ Page({
   },
   onLoad: function () {
     let _this = this
-    wx.showShareMenu({
-      //设为true，获取ShareTicket
-      withShareTicket: true
+    // this.setData({
+    //   dataaa: app.globalData.userInfo.nickName
+    // })
+    wx.checkSession({
+　　　　success: function (res) {
+　　　　　　console.log("处于登录态"+JSON.stringify(res));
+　　　　},
+　　　　fail: function (res) {
+          app.getSessionId()
+　　　　　 console.log("需要重新登录");
+　　　　}
     })
-    app.getShareTiket(function (globalData) {
-      console.log('clickReload---globalData-->' + JSON.stringify(globalData))
-      _this.setData({
-        openGid: globalData.openGid
-      })
-    })
-    var TIME = util.formatTime(new Date());
+    // wx.showShareMenu({
+    //   //设为true，获取ShareTicket
+    //   withShareTicket: true
+    // })
+    // app.getShareTiket(function (globalData) {
+    //   console.log('clickReload---globalData-->' + JSON.stringify(globalData))
+    //   _this.setData({
+    //     openGid: globalData.openGid
+    //   })
+    // })
+    // var TIME = util.formatTime(new Date());
     // console.log(TIME)
     const db = wx.cloud.database()
     db.collection('menuPolitics').get({
@@ -113,6 +126,7 @@ Page({
         })
       }
     })
+    
     //删除数据
     // wx.cloud.callFunction({
     //   name: 'remove',
@@ -147,7 +161,8 @@ Page({
               var str = JSON.stringify(res.userInfo);
               app.globalData.userInfo = res.userInfo
               _this.setData({
-                userInfo: res.userInfo
+                userInfo: res.userInfo,
+                login: false
               })
             }
           })
@@ -170,6 +185,10 @@ Page({
       path: "pages/index/index",
       imageUrl: '../../img/url.png'
     }
+  },
+  //签到
+  signIn() {
+
   },
   //下拉刷新事件
   onRefresh() {
@@ -260,35 +279,62 @@ Page({
     console.log('onChange1', e.detail)
   },  
   bindGetUserInfo: function (e) {
-    var _this = this
-    var TIME = util.formatTime(new Date());
-    console.log(TIME)
     app.globalData.userInfo = e.detail.userInfo
-    wx.cloud.callFunction({
-      name: 'bindUserInfo',
+    // app.getSessionId()
+    console.log("都简单")
+    var _this = this
+    wx.login({
+      success: function (res) {
+        //获取code
+        console.log('code-->' + res.code)
+        _this.setData({
+          login: false
+        })
+        wx.cloud.callFunction({
+          name: 'getSessionKey',
+          data: {
+            js_code: res.code,
+            appId: 'wxd401094a6b05b5fb'
+          },
+          success: function (res) {
+            console.log('res' + JSON.stringify(res));
+            wx.setStorageSync('session', res.result.sessionKey)
+            // wx.setStorageSync('session', res.result.sessionKey)
+            // that.globalData.openGid = res.result.openGId
+            var TIME = util.formatTime(new Date());
+            console.log(TIME)
+            wx.cloud.callFunction({
+              name: 'bindUserInfo',
+            })
+              .then(res => {
+                // console.log('000' + JSON.stringify(res))
+                if (res.result.data.length == 0) {
+                  const db = wx.cloud.database()
+                  // const todos = db.collection('userPublishing')
+                  db.collection('userInfo').add({
+                    // data 字段表示需新增的 JSON 数据
+                    data: {
+                      // _id: 'todo-identifiant-aleatoire', // 可选自定义 _id，在此处场景下用数据库自动分配的就可以了
+                      message: _this.data.value,
+                      gender: app.globalData.userInfo.gender,
+                      level: 1,
+                      time: TIME
+                    },
+                    success(res) {
+                      // res 是一个对象，其中有 _id 字段标记刚创建的记录的 id
+                      console.log(res)
+                    }
+                  })
+                }
+              })
+              .catch(console.error)
+          },
+          fail: function (err) {
+            console.log('getShareTiket---err' + JSON.stringify(err))
+          }
+        })
+      }
     })
-      .then(res => {
-        console.log('000' + JSON.stringify(res))
-        if (res.result.data.length == 0) {
-          const db = wx.cloud.database()
-          // const todos = db.collection('userPublishing')
-          db.collection('userInfo').add({
-            // data 字段表示需新增的 JSON 数据
-            data: {
-              // _id: 'todo-identifiant-aleatoire', // 可选自定义 _id，在此处场景下用数据库自动分配的就可以了
-              message: _this.data.value,
-              gender: app.globalData.userInfo.gender,
-              level: 1,
-              time: TIME
-            },
-            success(res) {
-              // res 是一个对象，其中有 _id 字段标记刚创建的记录的 id
-              console.log(res)
-            }
-          })
-        }
-      })
-      .catch(console.error)
   },
   handleContact(e) {
     console.log(e.path)

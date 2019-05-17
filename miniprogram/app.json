@@ -1,9 +1,10 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/catalogue/catalogue",
     "pages/learn/learn",
-    "pages/publication/index"
+    "pages/catalogue/catalogue",
+    
+    "pages/publication/index",
+    "pages/index/index"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",

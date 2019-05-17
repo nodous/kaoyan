@@ -19,8 +19,8 @@ Page({
         var parse = JSON.parse(res.data[0].data)
         console.log(parse)
         _this.setData({
-          title: parse.category,
-          dataList: parse.data
+          title: parse.label,
+          dataList: parse.children
         })
         // 输出 [{ "title": "The Catcher in the Rye", ... }]
       }

@@ -13,7 +13,7 @@
         <block>
           <swiper-item>
           <!-- 我的页面 -->
-          <view>
+          <!-- <view>
   <view wx:if="{{openGid}}" class='groupName'>
     群名称：
     <open-data type="groupName" open-gid="{{openGid}}"></open-data>
@@ -23,8 +23,7 @@
   </view>
   <view class='button'>{{openGid ? openGid : ' '}}</view>
   <view>把这个页面在真机上分享到微信群，然后从群里点进来，再点击按钮就能获取群ID</view>
-</view>
-              <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button>
+</view> -->
              <view class="myPage">
                 <view>
                    <view class="userInfoImg">
@@ -45,10 +44,10 @@
                           <view class="typeChange dengji">lv.1</view>
                         </i-col>
                         <i-col span="6">
-                          <view class="qiandaoP">
+                          <view class="qiandaoP" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">
                             <image src='../../img/qindao1.png' class="fright"></image>
-                              <image src='../../img/qindao.png' hidden="{{true}}" class="fright"></image>
-                              <view class="qiandao">签到</view>
+                            <image src='../../img/qindao.png' hidden="{{true}}" class="fright"></image>
+                            <view class="qiandao">签到</view>
                           </view>
                         </i-col>
                       </i-row>
@@ -187,8 +186,8 @@
           <!-- 吐槽鼓励圈 -->
           <swiper-item>
             <view class='weui-panel'>
+          
             <scroll-view scroll-y bindscrolltolower="getToLower" class="quanParent">
-
             <wux-refresher id="wux-refresher" bind:refresh="onRefresh">
             <!-- <wux-refresher  class="quanParent" bind:pulling="onPulling" bind:refresh="onRefresh" scrollTop="{{scrollTop}}" bind:loadmore="getToLower"> -->
                 <view class="onePerson" wx:for="{{tucaoList}}" wx:for-index="index" wx:for-item="item" wx:key="index">
@@ -228,5 +227,13 @@
     </view>
   </view>
   <wux-cascader visible="{{ visible1 }}" default-value="{{ value1 }}" title="选择科目" options="{{ options1 }}" bind:close="onClose1"   bind:change="onChange1" />
+  <view class='signIn' wx:if="{{login}}">
+    <view class="window">
+      <image src='../../img/scenery.jpg'></image>
+      <view class="ketang">欢迎来到考研学习课堂</view>
+      <view class="tips">尽享学习快乐时光</view>
+      <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" class='signInBtn'>授权登录</button>
+    </view>
+  </view>
   <i-toast id="toast" />
 </view>
