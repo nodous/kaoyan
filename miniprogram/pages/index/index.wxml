@@ -44,10 +44,10 @@
                           <view class="typeChange dengji">lv.1</view>
                         </i-col>
                         <i-col span="6">
-                          <view class="qiandaoP" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">
-                            <image src='../../img/qindao1.png' class="fright"></image>
-                            <image src='../../img/qindao.png' hidden="{{true}}" class="fright"></image>
-                            <view class="qiandao">签到</view>
+                          <view class="qiandaoP" bindtap='bindSignIn'>
+                            <image src='../../img/qindao1.png' hidden="{{qiandao == '已签到'}}" class="fright"></image>
+                            <image src='../../img/qindao.png' hidden="{{qiandao == '签到'}}" class="fright"></image>
+                            <view class="qiandao">{{qiandao}}</view>
                           </view>
                         </i-col>
                       </i-row>

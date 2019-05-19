@@ -205,7 +205,11 @@ height:100%;
 padding:0 2%;
 
 }
-
+.qiandao {
+  width: 70rpx;
+  font-size: 0.7em;
+  text-align: center
+} 
 
 .quanImg {
   width: 70rpx;

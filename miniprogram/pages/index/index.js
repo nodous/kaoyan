@@ -11,7 +11,7 @@ Page({
     projectList: ['我的', '学习呀', '吐槽圈'],
     projuectIndex: 1,
     scrollTop: 0,
-    login: true, //是否登陆过
+    login: false, //是否登陆过
     visible1: false,
     value1: [],
     pageNum: 0,
@@ -79,25 +79,94 @@ Page({
       },
     ],
     userInfo: '',
-    tucaoList: []
+    tucaoList: [],
+    qiandao: '签到',
+    userStatus: {}
   },
   clickReload: function () {
-    let that = this
+    let _this = this
+
     app.getShareTiket(function (globalData) {
       console.log('clickReload---globalData-->' + JSON.stringify(globalData))
-      that.setData({
+      _this.setData({
         openGid: globalData.openGid
       })
     })
   },
+  bindSignIn () {
+    var _this = this
+    if (this.data.qiandao == "已签到"){
+      return;
+    }
+    var TIME = util.formatTime(new Date());
+    var num=(this.data.userStatus.level+1)
+    if(this.data.userStatus=''){
+      console.log("mei")
+    }
+    const db = wx.cloud.database()
+    // var num1 = this.data.userStatus.level
+    console.log(num)
+    db.collection('userInfo').doc(_this.data.userStatus.id).update({
+      // data 传入需要局部更新的数据
+      data: {
+        // 表示将 done 字段置为 true
+        level: num,
+        time: util.formatTime(new Date())
+      },
+      success(res) {
+        console.log(res)
+      }
+    })
+  },
   onLoad: function () {
     let _this = this
+    const db = wx.cloud.database()
+
+     var timea =''+ util.formatTime(new Date());
+    console.log(timea)
+    // wx.cloud.callFunction({
+    //   name: 'opengid'
+    // })
+    // .then(res =>{
+    //       console.log("res-" + JSON.stringify(res))
+    // }).catch(err => {
+
+    // })
+    wx.cloud.callFunction({
+      name: 'login',
+    }).then(res =>{
+      console.log(JSON.stringify(res.result.event.userInfo.openId))
+      db.collection('userInfo').where({
+        "_openid": res.result.event.userInfo.openId
+         }).get({
+          success(res) {
+            var lastTime =''+ res.data[0].time.slice(0, 10)
+            var qiaodaoStaus;
+            if (lastTime == timea.slice(0, 10)) {
+              qiaodaoStaus = '已签到'
+              console.log('jj')
+            } else {
+              qiaodaoStaus = "签到"
+              console.log("签到")
+            }
+            _this.data.userStatus= {
+              level: res.data[0].level,
+              id: res.data[0]._id                   
+            }
+            
+            _this.setData({
+              qiandao: qiaodaoStaus,
+              userStatus: _this.data.userStatus
+            })
+          }
+        })
+    })
     // this.setData({
     //   dataaa: app.globalData.userInfo.nickName
     // })
     wx.checkSession({
 　　　　success: function (res) {
-　　　　　　console.log("处于登录态"+JSON.stringify(res));
+　　　　　console.log("处于登录态"+JSON.stringify(res));
 　　　　},
 　　　　fail: function (res) {
           app.getSessionId()
@@ -116,7 +185,6 @@ Page({
     // })
     // var TIME = util.formatTime(new Date());
     // console.log(TIME)
-    const db = wx.cloud.database()
     db.collection('menuPolitics').get({
       success(res) {
         var parse = JSON.parse(res.data[0].data)
@@ -145,7 +213,6 @@ Page({
     })
       .then(res => {
         // console.log('2122'+JSON.stringify(res.result))
-
         _this.setData({
           tucaoList: res.result.data
         })
@@ -172,6 +239,9 @@ Page({
           //   content: "请授权页面",
           //   type: 'error'
           // });
+          _this.setData({
+            login: true
+          })
         }
       }
     })
