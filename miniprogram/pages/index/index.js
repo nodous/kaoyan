@@ -6,8 +6,8 @@ const util = require('../../utils/util.js');
 const app = getApp()
 Page({
   data: {
-    cur: 1,
-    curIndex: 1, //当前的索引
+    cur: 0,
+    curIndex: 0, //当前的索引
     projectList: ['我的', '学习呀', '吐槽圈'],
     projuectIndex: 1,
     scrollTop: 0,
@@ -85,7 +85,7 @@ Page({
   },
   clickReload: function () {
     let _this = this
-
+    console.log("sdsfffff")
     app.getShareTiket(function (globalData) {
       console.log('clickReload---globalData-->' + JSON.stringify(globalData))
       _this.setData({
