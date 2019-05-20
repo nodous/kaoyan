@@ -231,7 +231,7 @@
     <view class="window">
       <image src='../../img/scenery.jpg'></image>
       <view class="ketang">欢迎来到考研学习课堂</view>
-      <view class="tips">尽享学习快乐时光</view>
+      <view class="tips">目前题库还未完全完善 因为平时上班很忙 亲爱的您可以收藏一下 我会给你个惊喜</view>
       <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" class='signInBtn'>授权登录</button>
     </view>
   </view>

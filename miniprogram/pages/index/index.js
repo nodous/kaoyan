@@ -6,8 +6,8 @@ const util = require('../../utils/util.js');
 const app = getApp()
 Page({
   data: {
-    cur: 0,
-    curIndex: 0, //当前的索引
+    cur: 1,
+    curIndex: 1, //当前的索引
     projectList: ['我的', '学习呀', '吐槽圈'],
     projuectIndex: 1,
     scrollTop: 0,
@@ -98,8 +98,8 @@ Page({
     if (this.data.qiandao == "已签到"){
       return;
     }
-    var TIME = util.formatTime(new Date());
-    var num=(this.data.userStatus.level+1)
+    console.log(this.data.userStatus.level)
+    var num=this.data.userStatus.level+1
     if(this.data.userStatus=''){
       console.log("mei")
     }
@@ -115,11 +115,15 @@ Page({
       },
       success(res) {
         console.log(res)
+        _this.setData({
+          qiandao: '已签到'
+        })
       }
     })
   },
   onLoad: function () {
     let _this = this
+    console.log("回来了")
     const db = wx.cloud.database()
 
      var timea =''+ util.formatTime(new Date());
@@ -347,9 +351,17 @@ Page({
   onChange1(e) {
     this.setData({ title1: e.detail.options.map((n) => n.label).join('/') })
     console.log('onChange1', e.detail)
+    var nowtitle = this.data.title1.split("/")[2]
+    console.log(nowtitle)
+    if (nowtitle == '1.1商品的基本属性') {
+      wx.navigateTo({
+      url: '../learn/learn'
+    })
+    }
   },  
   bindGetUserInfo: function (e) {
     app.globalData.userInfo = e.detail.userInfo
+    if (e.detail.userInfo) {//点击了“允许”按钮，
     // app.getSessionId()
     console.log("都简单")
     var _this = this
@@ -392,7 +404,14 @@ Page({
                     },
                     success(res) {
                       // res 是一个对象，其中有 _id 字段标记刚创建的记录的 id
-                      console.log(res)
+                      console.log("成功-"+JSON.stringify(res))
+                      _this.data.userStatus = {
+                        level: 1,
+                        id: res._id
+                      }
+                      _this.setData({
+                        userStatus: _this.data.userStatus
+                      })
                     }
                   })
                 }
@@ -405,6 +424,7 @@ Page({
         })
       }
     })
+    }
   },
   handleContact(e) {
     console.log(e.path)

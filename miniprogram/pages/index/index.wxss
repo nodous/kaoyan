@@ -325,7 +325,7 @@ padding:0 2%;
 }
 .window{
   width: 520rpx;
-  height: 500rpx;
+  height: 524rpx;
   background: white;
   border-radius: 10rpx;
 }
