@@ -36,7 +36,7 @@ swiper  {
 }
 .imgSwiper {
   width:100%;
-  height: 320rpx;
+  height: 228rpx;
 }
 .navImg {
   width: 100%;
@@ -325,7 +325,9 @@ padding:0 2%;
 }
 .window{
   width: 520rpx;
-  height: 524rpx;
+  /* height: 524rpx; */
+  overflow: hidden;
+  padding-bottom: 30rpx;
   background: white;
   border-radius: 10rpx;
 }
@@ -357,4 +359,69 @@ padding:0 2%;
   font-size: 28rpx;
   text-align: center;
   background: #32c27d;
+}
+
+.musicControl {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: black;
+  height: 100rpx;
+}
+.controlLeft {
+  width:34%;
+  height: 100%;
+  display: inline-block;
+}
+.controlLeft .image1 {
+  width: 36rpx;
+  height: 36rpx;
+}
+.fire {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height:100rpx;
+  color: white;
+}
+.fire1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height:60rpx;
+  color: white;
+}
+.fire2 {
+    display:flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height:40rpx;
+  color: white;
+}
+.musicImg {
+ width:66rpx;
+ height:66rpx;
+}
+.controlRight {
+  width:66%;
+  height: 100%;
+  display: inline-block;
+  vertical-align: top;
+}
+.musicBox1 {
+  width: 360rpx;
+  height: 4rpx;
+  background: rgb(163, 161, 161);
+}
+.controlTime {
+  color:white;
+  font-size: 0.6em;
+}
+.musicBox1 .line {
+  background: red;
+  height: 4rpx;
 }

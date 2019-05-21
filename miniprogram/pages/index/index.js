@@ -2,6 +2,14 @@
 const { $Toast } = require('../../dist/base/index');
 import { $stopWuxRefresher, $stopWuxLoader } from '../../dist/index'
 const util = require('../../utils/util.js');
+const innerAudioContext = wx.createInnerAudioContext()
+// 在页面中定义激励视频广告
+let videoAd = null
+// 在页面中定义插屏广告
+let interstitialAd = null
+
+
+
 //获取应用实例
 const app = getApp()
 Page({
@@ -16,18 +24,20 @@ Page({
     value1: [],
     pageNum: 0,
     loading: false,
+    chaping: true,
+    time1:"00:00",
+    lineWidth: 30,
+    time2:"00:00",
     background: [
       'demo-text-1',
       'demo-text-2',
       'demo-text-3'
     ],
     navImage: [
-      '../../img/1.jpg',
-      '../../img/2.jpg',
-      '../../img/3.jpg',
-      '../../img/4.jpg',
-      '../../img/5.jpg',
-      '../../img/6.jpg',
+      'adunit-18db11054d34070a',
+      'adunit-4291833fbe632cef',
+      'adunit-ea2e9a48d5a801f5',
+      'adunit-ab151242cd2dcf57',
     ],
     subject: [
       {
@@ -83,6 +93,47 @@ Page({
     qiandao: '签到',
     userStatus: {}
   },
+  //播放音乐
+  startMusic(){
+    // 1. 获取数据库引用
+    var _this =this
+    const db = wx.cloud.database()
+    // 2. 构造查询语句
+    db.collection('music').get({
+      success(res) {
+        // 输出 [{ "title": "The Catcher in the Rye", ... }]
+        innerAudioContext.autoplay = true
+        innerAudioContext.src = res.data[0].url;
+        innerAudioContext.onPlay(() => {
+          console.log('开始播放')
+        })
+        innerAudioContext.onError((res) => {
+          console.log(res.errMsg)
+          console.log(res.errCode)
+        })
+        innerAudioContext.onTimeUpdate(()=>{
+          console.log(innerAudioContext.currentTime)
+          _this.setData({
+            time1: _this.changeMin(innerAudioContext.currentTime),
+            time2: _this.changeMin(innerAudioContext.duration)
+          })
+          console.log(innerAudioContext.duration)
+
+        })
+      }
+    })
+  },
+  changeMin (value) {
+    var num1 = Math.floor(value)
+    console.log(num1)
+    var num = Math.floor(num1 / 60) > 9 ? Math.floor(num1 / 60) : "0" + Math.floor(num1 / 60)
+    var yu = num1 - num * 60 > 9 ? num1 - num * 60 : "0" + (num1 - num * 60)
+    var zhi = num + ":" + yu
+    return zhi;
+  },
+  changeDis(value) {
+
+  },
   clickReload: function () {
     let _this = this
     console.log("sdsfffff")
@@ -123,6 +174,41 @@ Page({
   },
   onLoad: function () {
     let _this = this
+    this.changeMin(116.111, 211.2222) 
+      // 在页面onLoad回调事件中创建插屏广告实例
+    if (wx.createInterstitialAd) {
+      interstitialAd = wx.createInterstitialAd({
+        adUnitId: 'adunit-b0af095b04dba6b5'
+      })
+      interstitialAd.onLoad(() => { })
+      interstitialAd.onError((err) => { })
+      interstitialAd.onClose(() => { 
+        _this.setData({
+          chaping: true
+        })
+      })
+    }
+    // // 在页面onLoad回调事件中创建激励视频广告实例
+    // if (wx.createRewardedVideoAd) {
+    //   videoAd = wx.createRewardedVideoAd({
+    //     adUnitId: 'adunit-d617c64def3eaec1'
+    //   })
+    //   videoAd.onLoad(() => { })
+    //   videoAd.onError((err) => { })
+    //   videoAd.onClose((res) => { })
+    // }
+
+    // // 用户触发广告后，显示激励视频广告
+    // if (videoAd) {
+    //   videoAd.show().catch(() => {
+    //     // 失败重试
+    //     videoAd.load()
+    //       .then(() => videoAd.show())
+    //       .catch(err => {
+    //         console.log('激励视频 广告显示失败')
+    //       })
+    //   })
+    // }
     console.log("回来了")
     const db = wx.cloud.database()
 
@@ -249,6 +335,20 @@ Page({
         }
       }
     })
+  },
+  showAdvertisement() {
+    // 在适合的场景显示插屏广告
+    this.setData({
+      chaping: false
+    })
+    console.log(1)
+    if (interstitialAd) {
+      interstitialAd.show().catch((err) => {
+        console.error(err)
+      })
+    }
+  },
+  onShow() {
   },
   onShareAppMessage: function (res) {
     if (res.from === 'button') {
