@@ -2,7 +2,6 @@
 const { $Toast } = require('../../dist/base/index');
 import { $stopWuxRefresher, $stopWuxLoader } from '../../dist/index'
 const util = require('../../utils/util.js');
-const innerAudioContext = wx.createInnerAudioContext()
 // 在页面中定义激励视频广告
 let videoAd = null
 // 在页面中定义插屏广告
@@ -26,8 +25,10 @@ Page({
     loading: false,
     chaping: true,
     time1:"00:00",
-    lineWidth: 30,
+    lineWidth: 8,
+    innerAudioContext: null,
     time2:"00:00",
+    startStatus: true,
     background: [
       'demo-text-1',
       'demo-text-2',
@@ -102,24 +103,34 @@ Page({
     db.collection('music').get({
       success(res) {
         // 输出 [{ "title": "The Catcher in the Rye", ... }]
-        innerAudioContext.autoplay = true
-        innerAudioContext.src = res.data[0].url;
-        innerAudioContext.onPlay(() => {
+        _this.data.innerAudioContext= wx.createInnerAudioContext()
+        _this.data.innerAudioContext.autoplay = true
+        _this.data.innerAudioContext.src = res.data[0].url;
+        _this.data.innerAudioContext.onPlay(() => {
           console.log('开始播放')
-        })
-        innerAudioContext.onError((res) => {
-          console.log(res.errMsg)
-          console.log(res.errCode)
-        })
-        innerAudioContext.onTimeUpdate(()=>{
-          console.log(innerAudioContext.currentTime)
           _this.setData({
-            time1: _this.changeMin(innerAudioContext.currentTime),
-            time2: _this.changeMin(innerAudioContext.duration)
+            startStatus: false
           })
-          console.log(innerAudioContext.duration)
-
         })
+        // innerAudioContext.onPause(() => {
+        //   console.log('单停')
+        //   _this.setData({
+        //     startStatus: true
+        //   })
+        // })
+        // innerAudioContext.onError((res) => {
+        //   console.log(res.errMsg)
+        //   console.log(res.errCode)
+        // })
+        // innerAudioContext.onTimeUpdate(()=>{
+        //   console.log(innerAudioContext.currentTime)
+        //   _this.setData({
+        //     time1: _this.changeMin(innerAudioContext.currentTime),
+        //     time2: _this.changeMin(innerAudioContext.duration)
+        //   })
+        //   console.log(innerAudioContext.duration)
+
+        // })
       }
     })
   },

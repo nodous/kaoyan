@@ -243,7 +243,8 @@
         </i-col>
         <i-col span="10">
             <view class='fire'>
-               <image src='../../img/pl.png' class="musicImg"></image>
+               <image src='../../img/pl.png' wx:if="{{startStatus}}" class="musicImg"></image>
+               <image src='../../img/pa.png' wx:if="{{!startStatus}}" class="musicImg"></image>
             </view>
         </i-col>
         <i-col span="7">
@@ -258,13 +259,13 @@
         <i-col span="24">
           <view class='fire1'>
              <view class="musicBox1">
-               <view class="line"></view>
+               <view class="line"  style="width: {{lineWidth}}px;"></view>
              </view>
           </view>
         </i-col>
         <i-col span="24">
             <view class='fire2'>
-               <view class="controlTime" style="width: {{lineWidth}}px;">{{time1+"/"+time2}}</view>
+               <view class="controlTime">{{time1+"/"+time2}}</view>
             </view>
         </i-col>
       </i-row>
