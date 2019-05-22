@@ -4,6 +4,14 @@ import { $stopWuxRefresher, $stopWuxLoader } from '../../dist/index'
 const util = require('../../utils/util.js');
 const db = wx.cloud.database()
 
+var animation = wx.createAnimation({
+
+  duration: 4000,
+  timingFunction: "ease",
+  delay: 0,
+  transformOrigin: "50% 50%",
+
+})
 // 在页面中定义激励视频广告
 let videoAd = null
 // 在页面中定义插屏广告
@@ -100,6 +108,26 @@ Page({
   },
   //停止音乐
   stopMusic() {
+    var animation = wx.createAnimation({
+      duration: 1000,
+      timingFunction: "ease",
+      delay: 500,
+      transformOrigin: "50% 50%",
+    })
+
+    //设置动画
+    // animation.rotate(90).step();     //旋转90度
+    //animation.scale(1.5).step();        //放大1.5倍
+    // animation.translate(0,100).step();        //偏移x,y,z
+    //animation.skew(30,50).step();        //倾斜x,y
+
+    animation.translate(0, 0).step();     //边旋转边放大
+
+
+    //导出动画数据传递给组件的animation属性。
+    this.setData({
+      animationData: animation.export(),
+    })
     this.data.innerAudioContext.pause()
     this.setData({
       startStatus: true,
@@ -113,6 +141,28 @@ Page({
   //播放音乐
   startMusic(){
     // 1. 获取数据库引用
+    var animation = wx.createAnimation({
+
+      duration: 1000,
+      timingFunction: "ease",
+      delay: 0,
+      transformOrigin: "50% 50%",
+
+    })
+
+    //设置动画
+    // animation.rotate(90).step();     //旋转90度
+    //animation.scale(1.5).step();        //放大1.5倍
+    // animation.translate(0,100).step();        //偏移x,y,z
+    //animation.skew(30,50).step();        //倾斜x,y
+
+    animation.translate(0, -50).step();     //边旋转边放大
+
+
+    //导出动画数据传递给组件的animation属性。
+    this.setData({
+      animationData: animation.export(),
+    })
     var _this =this
     // 2. 构造查询语句
     db.collection('music').skip(0).limit(1).get({
@@ -159,17 +209,45 @@ Page({
       }
     })
   },
+  //up music
+  prevMusic() {
+    var _this = this
+    var num = this.data.musicIndex - 1
+    if(num<0) {
+      num = 0
+    }
+    const db = wx.cloud.database()
+    _this.data.innerAudioContext.stop()
+
+    db.collection('music').skip(num).limit(2).get({
+      success(res) {
+        console.log(res)
+        _this.data.innerAudioContext.src = res.data[0].url;
+        _this.data.innerAudioContext.play()
+        _this.setData({
+          musicIndex: num
+        })
+      }
+    })
+  },
   //下一首音乐
   nextMusic(){
     var _this = this
     var num = this.data.musicIndex +1
     const db = wx.cloud.database()
-    db.collection('music').skip(num).limit(1).get({
+    _this.data.innerAudioContext.stop()
+
+    db.collection('music').skip(num).limit(2).get({
       success(res) {
         console.log(res)
-        _this.data.innerAudioContext.stop()
+        if(res.data.length<2) {
+          num = -1
+        }
         _this.data.innerAudioContext.src = res.data[0].url;
         _this.data.innerAudioContext.play()
+        _this.setData({
+          musicIndex: num
+        })
       }
     })
     // _this.data.innerAudioContext.src = res.data[0].url;
