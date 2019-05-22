@@ -243,13 +243,13 @@
         </i-col>
         <i-col span="10">
             <view class='fire'>
-               <image src='../../img/pl.png' wx:if="{{startStatus}}" class="musicImg"></image>
-               <image src='../../img/pa.png' wx:if="{{!startStatus}}" class="musicImg"></image>
+               <image src='../../img/pl.png' wx:if="{{startStatus}}" bindtap="continueMusic" class="musicImg"></image>
+               <image src='../../img/pa.png' wx:if="{{!startStatus}}" bindtap='stopMusic' class="musicImg"></image>
             </view>
         </i-col>
         <i-col span="7">
            <view class='fire'>
-            <image src='../../img/next.png' class="image1"></image>
+            <image src='../../img/next.png' class="image1" bindtap='nextMusic'></image>
           </view>
         </i-col>
       </i-row>
@@ -259,7 +259,7 @@
         <i-col span="24">
           <view class='fire1'>
              <view class="musicBox1">
-               <view class="line"  style="width: {{lineWidth}}px;"></view>
+               <view class="line"  style="width: {{lineWidth}}rpx;"></view>
              </view>
           </view>
         </i-col>

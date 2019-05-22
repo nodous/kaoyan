@@ -2,6 +2,8 @@
 const { $Toast } = require('../../dist/base/index');
 import { $stopWuxRefresher, $stopWuxLoader } from '../../dist/index'
 const util = require('../../utils/util.js');
+const db = wx.cloud.database()
+
 // 在页面中定义激励视频广告
 let videoAd = null
 // 在页面中定义插屏广告
@@ -25,10 +27,12 @@ Page({
     loading: false,
     chaping: true,
     time1:"00:00",
-    lineWidth: 8,
+    lineWidth: 0,
     innerAudioContext: null,
     time2:"00:00",
+    touchSwitch: true,
     startStatus: true,
+    musicIndex: 0,
     background: [
       'demo-text-1',
       'demo-text-2',
@@ -94,56 +98,95 @@ Page({
     qiandao: '签到',
     userStatus: {}
   },
+  //停止音乐
+  stopMusic() {
+    this.data.innerAudioContext.pause()
+    this.setData({
+      startStatus: true,
+      touchSwitch: true
+    })
+  },
+  //jixuyinyue
+  continueMusic() {
+    this.data.innerAudioContext.play()
+  },
   //播放音乐
   startMusic(){
     // 1. 获取数据库引用
     var _this =this
-    const db = wx.cloud.database()
     // 2. 构造查询语句
-    db.collection('music').get({
+    db.collection('music').skip(0).limit(1).get({
       success(res) {
         // 输出 [{ "title": "The Catcher in the Rye", ... }]
+        console.log(res)
+        if (!_this.data.touchSwitch)
+        return;
+        _this.setData({
+          touchSwitch: false
+        })
         _this.data.innerAudioContext= wx.createInnerAudioContext()
         _this.data.innerAudioContext.autoplay = true
         _this.data.innerAudioContext.src = res.data[0].url;
         _this.data.innerAudioContext.onPlay(() => {
           console.log('开始播放')
           _this.setData({
-            startStatus: false
+            startStatus: false,
+            touchSwitch:false
           })
         })
-        // innerAudioContext.onPause(() => {
-        //   console.log('单停')
-        //   _this.setData({
-        //     startStatus: true
-        //   })
-        // })
-        // innerAudioContext.onError((res) => {
-        //   console.log(res.errMsg)
-        //   console.log(res.errCode)
-        // })
-        // innerAudioContext.onTimeUpdate(()=>{
-        //   console.log(innerAudioContext.currentTime)
-        //   _this.setData({
-        //     time1: _this.changeMin(innerAudioContext.currentTime),
-        //     time2: _this.changeMin(innerAudioContext.duration)
-        //   })
-        //   console.log(innerAudioContext.duration)
-
-        // })
+        _this.data.innerAudioContext.onPause(() => {
+          console.log('单停')
+          _this.setData({
+            startStatus: true
+          })
+        })
+        _this.data.innerAudioContext.onError((res) => {
+          console.log(res.errMsg)
+          console.log(res.errCode)
+        })
+        _this.data.innerAudioContext.onTimeUpdate(()=>{
+          // console.log(_this.data.innerAudioContext.currentTime)
+          _this.setData({
+            time1: _this.changeMin(_this.data.innerAudioContext.currentTime),
+            time2: _this.changeMin(_this.data.innerAudioContext.duration),
+            lineWidth: _this.data.innerAudioContext.currentTime / _this.data.innerAudioContext.duration*360
+          })
+          // console.log(_this.data.innerAudioContext.duration)
+        })
+        _this.setData({
+          innerAudioContext: _this.data.innerAudioContext
+        })
       }
     })
   },
+  //下一首音乐
+  nextMusic(){
+    var _this = this
+    var num = this.data.musicIndex +1
+    const db = wx.cloud.database()
+    db.collection('music').skip(num).limit(1).get({
+      success(res) {
+        console.log(res)
+        _this.data.innerAudioContext.stop()
+        _this.data.innerAudioContext.src = res.data[0].url;
+        _this.data.innerAudioContext.play()
+      }
+    })
+    // _this.data.innerAudioContext.src = res.data[0].url;
+  },
   changeMin (value) {
     var num1 = Math.floor(value)
-    console.log(num1)
     var num = Math.floor(num1 / 60) > 9 ? Math.floor(num1 / 60) : "0" + Math.floor(num1 / 60)
     var yu = num1 - num * 60 > 9 ? num1 - num * 60 : "0" + (num1 - num * 60)
     var zhi = num + ":" + yu
     return zhi;
   },
-  changeDis(value) {
-
+  changeDis(value,value2) {
+    let zongchang = 360
+    let nowWidth = value/value2*360
+    this.setData({
+      lineWidth: nowWidth
+    })
   },
   clickReload: function () {
     let _this = this
@@ -185,6 +228,7 @@ Page({
   },
   onLoad: function () {
     let _this = this
+    const db = wx.cloud.database()
     this.changeMin(116.111, 211.2222) 
       // 在页面onLoad回调事件中创建插屏广告实例
     if (wx.createInterstitialAd) {
@@ -221,7 +265,6 @@ Page({
     //   })
     // }
     console.log("回来了")
-    const db = wx.cloud.database()
 
      var timea =''+ util.formatTime(new Date());
     console.log(timea)
