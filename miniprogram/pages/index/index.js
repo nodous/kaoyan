@@ -31,6 +31,7 @@ Page({
     login: false, //是否登陆过
     visible1: false,
     value1: [],
+    musicNumAll: 0,
     pageNum: 0,
     loading: false,
     chaping: true,
@@ -158,7 +159,14 @@ Page({
 
     animation.translate(0, -50).step();     //边旋转边放大
 
-
+    db.collection('music').count({
+      success(res) {
+        console.log(res)
+        _this.setData({
+          musicNumAll: res.total
+        })
+      }
+    })
     //导出动画数据传递给组件的animation属性。
     this.setData({
       animationData: animation.export(),
@@ -214,7 +222,7 @@ Page({
     var _this = this
     var num = this.data.musicIndex - 1
     if(num<0) {
-      num = 0
+      num = _this.data.musicNumAll -1
     }
     const db = wx.cloud.database()
     _this.data.innerAudioContext.stop()
@@ -234,15 +242,13 @@ Page({
   nextMusic(){
     var _this = this
     var num = this.data.musicIndex +1
+    if (num >= this.data.musicNumAll) {
+      num = 0
+    }
     const db = wx.cloud.database()
     _this.data.innerAudioContext.stop()
-
-    db.collection('music').skip(num).limit(2).get({
+    db.collection('music').skip(num).limit(1).get({
       success(res) {
-        console.log(res)
-        if(res.data.length<2) {
-          num = -1
-        }
         _this.data.innerAudioContext.src = res.data[0].url;
         _this.data.innerAudioContext.play()
         _this.setData({

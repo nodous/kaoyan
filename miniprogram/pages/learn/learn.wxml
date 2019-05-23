@@ -2,8 +2,8 @@
 <view>
   <view class="container1">
     <view class="header">
-      <view class="headerBox">
-              {{title}}
+      <view class="headerBox" bindtap='return'>
+             {{'<'}}  {{title}}
       </view>
     </view>
   </view>

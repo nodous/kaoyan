@@ -65,7 +65,7 @@
                 <ad unit-id="adunit-ea2e9a48d5a801f5"></ad>
                 <view class="appDevelopmentInformation">
                   <i-row>
-                    <i-col span="9"><button open-type="contact" bindcontact="handleContact">联系客服</button></i-col>
+                    <i-col span="9"><button open-type="handleContact" bindcontact="handleContact">联系客服</button></i-col>
                     <i-col span="15"><view>当前版本： 2019-5-12</view></i-col>
                   </i-row>
                   
@@ -152,6 +152,7 @@
                 </i-row>
               </view>
               <!-- 推荐学习 -->
+
               <view class='tuijian'>为你推荐学习</view>
               <view>
                 <i-row>
@@ -180,6 +181,8 @@
                     </view>
                   </i-col>
                 </i-row>
+               <ad unit-id="adunit-ea2e9a48d5a801f5"></ad>
+
                 <view style='width: 100%;height: 100rpx;'></view>
               </view>
             </view>
@@ -222,6 +225,7 @@
           </view>
           </swiper-item>
         </block>
+        
       </swiper>
     </view>
   </view>
@@ -272,5 +276,6 @@
       </i-row>
     </view>
   </view>
+
   <i-toast id="toast" />
 </view>

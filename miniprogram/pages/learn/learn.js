@@ -58,6 +58,11 @@ Page({
     this.animation.rotate(0).scale(1).translate(-1000, 0).step();
     this.setData({ animationData: this.animation.export() });
   },
+  return () {
+    wx.navigateBack({
+      delta: 1
+    })
+  },
   getToLower(ev) {
     // var nowNum = this.data.pageNum + 10;
     // var _this = this
