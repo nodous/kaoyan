@@ -34,16 +34,16 @@ Page({
     const db = wx.cloud.database()
     db.collection('politics').get({
       success(res) {
+
         var parse = JSON.parse(res.data[0].data)
-        console.log(parse.data[0].data)
 
         console.log(parse)
         _this.setData({
-          title: parse.data[0].title, 
-          questionList: parse.data[0].data
+          title: parse.data[2].title, 
+          questionList: parse.data[2].data
         })
         // 输出 [{ "title": "The Catcher in the Rye", ... }]
-      }
+      }    
     })
   },
   touchStart(e) {

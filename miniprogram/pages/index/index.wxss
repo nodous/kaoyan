@@ -1,11 +1,27 @@
 /**index.wxss**/
 .header {
+  position: relative;
   width: 100%;
   display: flex;
   background: #32c27d;
   justify-content: center;
   /* align-items: center; */
   height: 168rpx;
+}
+.windmill {
+  width:78rpx;
+  height:78rpx;
+  position:absolute;
+  top:76rpx;
+  left:32rpx;
+}
+.windmillHandle{
+  width:20rpx;
+height:54rpx;
+position:absolute;
+top:114rpx;
+left:60rpx;
+
 }
 .headerBox {
   width: 50%;
@@ -36,7 +52,7 @@ swiper  {
 }
 .imgSwiper {
   width:100%;
-  height: 228rpx;
+  height: 330rpx;
 }
 .navImg {
   width: 100%;
@@ -379,6 +395,7 @@ padding:0 2%;
   height: 36rpx;
 }
 .fire {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -424,4 +441,13 @@ padding:0 2%;
 .musicBox1 .line {
   background: red;
   height: 4rpx;
+}
+.girl {
+ position:absolute;
+width:173rpx;
+height:202rpx;
+top:-105rpx;
+left:-29rpx;
+z-index:-10;
+
 }

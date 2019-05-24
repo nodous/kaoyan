@@ -5,13 +5,18 @@ const util = require('../../utils/util.js');
 const db = wx.cloud.database()
 
 var animation = wx.createAnimation({
-
   duration: 4000,
   timingFunction: "ease",
   delay: 0,
   transformOrigin: "50% 50%",
-
 })
+var windMillAnm = wx.createAnimation({
+  duration: 3000,
+  timingFunction: "linear",
+  delay: 0,
+  transformOrigin: "50% 50%"
+});  
+
 // 在页面中定义激励视频广告
 let videoAd = null
 // 在页面中定义插屏广告
@@ -24,6 +29,7 @@ const app = getApp()
 Page({
   data: {
     cur: 1,
+    rotate: 180,
     curIndex: 1, //当前的索引
     projectList: ['我的', '学习呀', '吐槽圈'],
     projuectIndex: 1,
@@ -48,10 +54,12 @@ Page({
       'demo-text-3'
     ],
     navImage: [
-      'adunit-18db11054d34070a',
-      'adunit-4291833fbe632cef',
-      'adunit-ea2e9a48d5a801f5',
-      'adunit-ab151242cd2dcf57',
+      '../../img/1.jpg',
+      '../../img/2.jpg',
+      '../../img/3.jpg',
+      '../../img/4.jpg',
+      '../../img/5.jpg',
+      '../../img/6.jpg'
     ],
     subject: [
       {
@@ -220,6 +228,9 @@ Page({
   //up music
   prevMusic() {
     var _this = this
+    this.setData({
+      startStatus: true
+    })
     var num = this.data.musicIndex - 1
     if(num<0) {
       num = _this.data.musicNumAll -1
@@ -241,6 +252,9 @@ Page({
   //下一首音乐
   nextMusic(){
     var _this = this
+    this.setData({
+      startStatus: true
+    })
     var num = this.data.musicIndex +1
     if (num >= this.data.musicNumAll) {
       num = 0
@@ -312,6 +326,18 @@ Page({
   },
   onLoad: function () {
     let _this = this
+
+    windMillAnm.rotate(180).step();
+    var interval = setInterval(function () {
+      windMillAnm.rotate(this.data.rotate).step();
+      this.setData({
+        windMillAnm: windMillAnm.export(),
+        rotate: this.data.rotate + 180
+      })
+    }.bind(this), 3000)
+
+
+
     const db = wx.cloud.database()
     this.changeMin(116.111, 211.2222) 
       // 在页面onLoad回调事件中创建插屏广告实例
@@ -520,7 +546,7 @@ Page({
         })
         $stopWuxRefresher()
       })
-      .catch(console.error)
+      .catch($stopWuxRefresher())
   },
   handleChange({ detail }) {
     this.setData({
