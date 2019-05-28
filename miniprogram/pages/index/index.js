@@ -151,22 +151,17 @@ Page({
   startMusic(){
     // 1. 获取数据库引用
     var animation = wx.createAnimation({
-
       duration: 1000,
       timingFunction: "ease",
       delay: 0,
       transformOrigin: "50% 50%",
-
     })
-
     //设置动画
     // animation.rotate(90).step();     //旋转90度
     //animation.scale(1.5).step();        //放大1.5倍
     // animation.translate(0,100).step();        //偏移x,y,z
     //animation.skew(30,50).step();        //倾斜x,y
-
-    animation.translate(0, -50).step();     //边旋转边放大
-
+    animation.translate(0, -100).step();     //边旋转边放大
     db.collection('music').count({
       success(res) {
         console.log(res)
@@ -326,7 +321,7 @@ Page({
   },
   onLoad: function () {
     let _this = this
-
+    // wx.showNavigationBarLoading()
     windMillAnm.rotate(180).step();
     var interval = setInterval(function () {
       windMillAnm.rotate(this.data.rotate).step();
@@ -614,12 +609,12 @@ Page({
   },
   onChange1(e) {
     this.setData({ title1: e.detail.options.map((n) => n.label).join('/') })
-    console.log('onChange1', e.detail)
+    console.log('onChange1', e.detail.value)
     var nowtitle = this.data.title1.split("/")[2]
     console.log(nowtitle)
-    if (nowtitle == '1.1商品的基本属性') {
+    if (e.detail.value.length>2) {
       wx.navigateTo({
-      url: '../learn/learn'
+      url: '../learn/learn?select='+e.detail.value
     })
     }
   },  

@@ -156,6 +156,8 @@
               <!-- 推荐学习 -->
 
               <view class='tuijian'>为你推荐学习</view>
+               <ad unit-id="adunit-ea2e9a48d5a801f5"></ad>
+
               <view>
                 <i-row>
                   <i-col span="8">
@@ -183,7 +185,6 @@
                     </view>
                   </i-col>
                 </i-row>
-               <ad unit-id="adunit-ea2e9a48d5a801f5"></ad>
 
                 <view style='width: 100%;height: 30rpx;'></view>
               </view>

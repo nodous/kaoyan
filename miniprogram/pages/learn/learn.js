@@ -23,6 +23,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    let params = options.select.split(',')
     var _this = this
     this.animation = animation
     this.animation.rotate(0).scale(1).translate(-1000, 0).step();
@@ -34,13 +35,25 @@ Page({
     const db = wx.cloud.database()
     db.collection('politics').get({
       success(res) {
-
-        var parse = JSON.parse(res.data[0].data)
-
-        console.log(parse)
+        var parse = JSON.parse(res.data[params[0]].data)
+        var name = parse.data[params[0]].data[params[1]].data[params[2]].select
+        // console.log('11111' + name)
+        // var reg = RegExp(/\[/);
+        // console.log('11111'+name.match(reg))
+   
+        // if(typeof(name)== 'string'){
+        //   console.log('11111')
+        //   var aa = name.split('B')[0].split('A')[1]
+        //   var bb = name.split('B')[1].split('C')[0]
+        //   var cc = name.split('C')[1].split('D')[0]
+        //   var dd = name.split('D')[1]
+        //   var arr = [aa,bb,cc,dd]
+        //   console.log(arr)
+        //   parse.data[params[0]].data[params[1]].data[params[2]].select = arr
+        // }
         _this.setData({
-          title: parse.data[2].title, 
-          questionList: parse.data[2].data
+          title: parse.data[params[1]].data[params[2]].title, 
+          questionList: parse.data[params[1]].data[params[2]].data
         })
         // 输出 [{ "title": "The Catcher in the Rye", ... }]
       }    

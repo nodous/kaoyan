@@ -379,7 +379,7 @@ padding:0 2%;
 
 .musicControl {
   position: fixed;
-  bottom: -100rpx;
+  bottom: -200rpx;
   left: 0;
   width: 100%;
   background: black;
