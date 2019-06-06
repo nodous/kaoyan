@@ -1,0 +1,11 @@
+<swiper class="imageContainer" bindchange="handleChange" previous-margin="50rpx" next-margin="50rpx" circular autoplay>
+  <block wx:for="{{3}}" wx:key="{{index}}">
+    <swiper-item class="item">
+      <view class="itemImg {{currentIndex == index ? ' active ': ' '}}" style='background: {{bgColor}};'>
+         
+      </view>
+    </swiper-item>
+  </block>
+</swiper>
+ 
+<view class='layout'><text style='color:{{bgColor}}'>这是一个寂寞的天，下着有些伤心的雨</text></view>

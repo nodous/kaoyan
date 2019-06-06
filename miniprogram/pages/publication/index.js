@@ -26,7 +26,17 @@ Page({
       value: e.detail.value
     })
   },
-
+  onShareAppMessage: function (res) {
+    // console.log(app.globalData.userInfo)
+    if (res.from === 'button') {
+      // 来自页面内转发按钮
+    }
+    return {
+      title: "来自cxk的吐槽推荐",
+      path: "pages/index/index",
+      imageUrl: ''
+    }
+  },
   sendMyMessage() {
     // wx.checkSession({
     //   success: function (res) {

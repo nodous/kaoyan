@@ -24,6 +24,7 @@ Page({
    */
   onLoad: function (options) {
     let params = options.select.split(',')
+    console.log(params)
     var _this = this
     this.animation = animation
     this.animation.rotate(0).scale(1).translate(-1000, 0).step();
@@ -36,23 +37,37 @@ Page({
     db.collection('politics').get({
       success(res) {
         var parse = JSON.parse(res.data[params[0]].data)
-        var name = parse.data[params[0]].data[params[1]].data[params[2]].select
-        // console.log('11111' + name)
+        //  parse.data[params[0]].data[params[1]].data[params[2]].select
+        console.log('11111' +JSON.stringify(parse.data[params[1]].data[params[2]].data))
         // var reg = RegExp(/\[/);
-        // console.log('11111'+name.match(reg))
-   
-        // if(typeof(name)== 'string'){
-        //   console.log('11111')
-        //   var aa = name.split('B')[0].split('A')[1]
-        //   var bb = name.split('B')[1].split('C')[0]
-        //   var cc = name.split('C')[1].split('D')[0]
-        //   var dd = name.split('D')[1]
-        //   var arr = [aa,bb,cc,dd]
-        //   console.log(arr)
-        //   parse.data[params[0]].data[params[1]].data[params[2]].select = arr
-        // }
+        console.log('2222' )
+        var num = 0;
+        var t = typeof parse.data[params[1]].data[params[2]].data;
+        if (t == 'string') {
+          console.log('string')
+          num = parse.data[params[1]].data[params[2]].data.length;
+
+        } else if (t == 'object') {
+          console.log('object')
+          num = 0;
+          for (var i in parse.data[params[1]].data[params[2]].data) {
+            num++;
+          }
+          console.log(num)
+          for(var i = 0;i<num;i++) {
+            if (typeof (parse.data[params[1]].data[params[2]].data[i].select) == 'string'){
+              var name = parse.data[params[1]].data[params[2]].data[i].select
+              var aa = name.split('B')[0].split('A')[1]
+              var bb = name.split('B')[1].split('C')[0]
+              var cc = name.split('C')[1].split('D')[0]
+              var dd = name.split('D')[1]
+              var arr = [aa,bb,cc,dd]
+              parse.data[params[1]].data[params[2]].data[i].select = arr
+          }
+        }
+        }
         _this.setData({
-          title: parse.data[params[1]].data[params[2]].title, 
+                 title: parse.data[params[1]].data[params[2]].title, 
           questionList: parse.data[params[1]].data[params[2]].data
         })
         // 输出 [{ "title": "The Catcher in the Rye", ... }]

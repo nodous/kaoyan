@@ -54,36 +54,36 @@ Page({
       'demo-text-3'
     ],
     navImage: [
-      '../../img/1.jpg',
-      '../../img/2.jpg',
-      '../../img/3.jpg',
-      '../../img/4.jpg',
-      '../../img/5.jpg',
-      '../../img/6.jpg'
     ],
     subject: [
       {
         img: '../../img/ty.png',
+        name: 'tiyu',
         words: '体育'
       },
       {
         img: '../../img/zz.png',
+        name: 'zhengzhi',
         words: '政治'
       },
       {
         img: '../../img/yy.png',
+        name: 'yingyu',
         words: '英语'
       },
       {
         img: '../../img/sx.png',
+        name: 'shuxue',
         words: '数学'
       },
       {
         img: '../../img/yx.png',
-        words: '医学'
+        name: 'shengwu',
+        words: '生物'
       },
       {
         img: '../../img/ls.png',
+        name: 'lishi',
         words: '历史'
       }
 
@@ -164,7 +164,6 @@ Page({
     animation.translate(0, -100).step();     //边旋转边放大
     db.collection('music').count({
       success(res) {
-        console.log(res)
         _this.setData({
           musicNumAll: res.total
         })
@@ -179,7 +178,6 @@ Page({
     db.collection('music').skip(0).limit(1).get({
       success(res) {
         // 输出 [{ "title": "The Catcher in the Rye", ... }]
-        console.log(res)
         if (!_this.data.touchSwitch)
         return;
         _this.setData({
@@ -235,7 +233,6 @@ Page({
 
     db.collection('music').skip(num).limit(2).get({
       success(res) {
-        console.log(res)
         _this.data.innerAudioContext.src = res.data[0].url;
         _this.data.innerAudioContext.play()
         _this.setData({
@@ -285,7 +282,6 @@ Page({
     let _this = this
     console.log("sdsfffff")
     app.getShareTiket(function (globalData) {
-      console.log('clickReload---globalData-->' + JSON.stringify(globalData))
       _this.setData({
         openGid: globalData.openGid
       })
@@ -320,6 +316,19 @@ Page({
     })
   },
   onLoad: function () {
+    var db1 = wx.cloud.database()
+    db1.collection('userInfo').count({
+      success(res) {
+        console.log("大哥，咱们浏览总人数="+res.total+"人")
+      }
+    })
+    this.data.navImage =[]
+    for(var i=1;i<14;i++){
+      this.data.navImage.push('cloud://kaoyan123-7fnzi.6b61-kaoyan123-7fnzi/lunbo/'+i+'.jpg')
+    }
+    this.setData({
+      navImage: this.data.navImage
+    })
     let _this = this
     // wx.showNavigationBarLoading()
     windMillAnm.rotate(180).step();
@@ -384,7 +393,6 @@ Page({
     wx.cloud.callFunction({
       name: 'login',
     }).then(res =>{
-      console.log(JSON.stringify(res.result.event.userInfo.openId))
       db.collection('userInfo').where({
         "_openid": res.result.event.userInfo.openId
          }).get({
@@ -434,15 +442,7 @@ Page({
     // })
     // var TIME = util.formatTime(new Date());
     // console.log(TIME)
-    db.collection('menuPolitics').get({
-      success(res) {
-        var parse = JSON.parse(res.data[0].data)
-        console.log(parse.children)
-        _this.setData({
-          options1: parse.children
-        })
-      }
-    })
+   
     
     //删除数据
     // wx.cloud.callFunction({
@@ -510,13 +510,14 @@ Page({
   onShow() {
   },
   onShareAppMessage: function (res) {
+    // console.log(app.globalData.userInfo)
     if (res.from === 'button') {
       // 来自页面内转发按钮
     }
     return {
-      title: "来自泡面的考研学习推荐",
+      title: "来自" + app.globalData.userInfo.nickName+"的吐槽推荐",
       path: "pages/index/index",
-      imageUrl: '../../img/url.png'
+      imageUrl: ''
     }
   },
   //签到
@@ -598,9 +599,23 @@ Page({
     //   url: '../logs/logs'
     // })
   },
-  onOpen1() {
-    console.log(111)
-    this.setData({ visible1: true })
+  onOpen1(e) {
+    console.log(e)
+    var _this = this
+    var name = e.currentTarget.dataset.name
+    db.collection('menuPolitics').where({
+      name: name
+    }).get({
+      success(res) {
+        console.log(JSON.stringify(res))
+        var parse = JSON.parse(res.data[0].data)
+        _this.setData({
+          options1: parse.children,
+          visible1: true
+        })
+      }
+    })
+
   },
   onClose1() {
     this.setData({ 
@@ -618,6 +633,12 @@ Page({
     })
     }
   },  
+  gozhengzhi(){
+    console.log('111')
+    wx.navigateTo({
+      url: "../learn/learn?select=" + ['0', '0', '0']
+    })
+  },
   bindGetUserInfo: function (e) {
     app.globalData.userInfo = e.detail.userInfo
     if (e.detail.userInfo) {//点击了“允许”按钮，

@@ -5,7 +5,7 @@
      <image src='/img/windmill.png' class="windmill" animation="{{windMillAnm}}"></image>
      <view class="headerBox">
         <i-row i-class="demo-row">
-          <i-col wx:for="{{projectList}}" wx:key="index" span="8" style="{{curIndex == index ? 'font-size: 36rpx': ''}}" i-class="demo-col">{{item}}</i-col>
+          <i-col wx:for="{{projectList}}" wx:key="index" span="8" i-class="{{curIndex == index ? 'setinfor': 'infor'}}">{{item}}</i-col>
       </i-row>
      </view>
   </view>
@@ -67,11 +67,9 @@
                 <ad unit-id="adunit-ea2e9a48d5a801f5"></ad>
                 <view class="appDevelopmentInformation">
                   <i-row>
-                    <i-col span="9"><button open-type="handleContact" bindcontact="handleContact">联系客服</button></i-col>
-                    <i-col span="15"><view>当前版本： 2019-5-12</view></i-col>
+                    <i-col span="9"><button type='default' session-from='{"nickName":"{{userInfo.nickName}}","avatarUrl":"{{userInfo.avatarUrl}}"}' open-type="contact" >联系客服</button></i-col>
+                    <i-col span="15"><view>Edition： a year later today</view></i-col>
                   </i-row>
-                  
-                  
                 </view>
              </view>
           </swiper-item>
@@ -96,7 +94,7 @@
                 <i-row>
                    <i-col span="4" wx:for="{{subject}}" wx:key="index">
                       <view class="subjectType">
-                        <view bindtap='onOpen1'>
+                        <view bindtap='onOpen1' data-name="{{item.name}}">
                           <image src='{{item.img}}' class="subjectImg"></image>
                           <view class="subjectFont">{{item.words}}</view>
                         </view>
@@ -123,9 +121,9 @@
                           <view class="musicClassify">
                             <i-row>
                               <i-col span='17'>
-                                <view class="newMusicBox">
-                                  <view class="newMusic">新音乐推荐</view> 
-                                  <view class="areYouLike">枯燥的音乐怎么能缺少音乐！</view> 
+                                <view class="newMusicBox" bindtap="gozhengzhi">
+                                  <view class="newMusic">随机练习</view> 
+                                  <view class="areYouLike">are you ready ?</view> 
                                 </view>
                               </i-col>
                               <i-col span='7'>
@@ -138,9 +136,9 @@
                             <view class="musicClassify">
                               <i-row>
                                 <i-col span='17'>
-                                  <view class="newMusicBox">
-                                    <view class="newMusic">历史音乐推荐</view> 
-                                    <view class="areYouLike">枯燥的音乐怎么能缺少音乐！</view> 
+                                  <view class="newMusicBox" bindtap="gozhengzhi">
+                                    <view class="newMusic">政治随机知识点学习</view> 
+                                    <view class="areYouLike">let go</view> 
                                   </view>
                                 </i-col>
                                 <i-col span='7'>
@@ -156,7 +154,7 @@
               <!-- 推荐学习 -->
 
               <view class='tuijian'>为你推荐学习</view>
-               <ad unit-id="adunit-ea2e9a48d5a801f5"></ad>
+               <ad unit-id="adunit-ea2e9a48d5a801f5" style="margin-bottom:10rpx;"></ad>
 
               <view>
                 <i-row>
@@ -224,7 +222,7 @@
             </wux-refresher>
             <i-load-more loading="{{ loading }}" />
             </scroll-view>
-              <navigator class="sendMessage" url="/pages/publication/index" hover-class="navigator-hover">吐槽</navigator>
+              <navigator class="sendMessage" url="/pages/publication/index" hover-class="navigator-hover">我也要分享</navigator>
           </view>
           </swiper-item>
         </block>
