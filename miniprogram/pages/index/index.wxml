@@ -5,7 +5,7 @@
      <image src='/img/windmill.png' class="windmill" animation="{{windMillAnm}}"></image>
      <view class="headerBox">
         <i-row i-class="demo-row">
-          <i-col wx:for="{{projectList}}" wx:key="index" span="8" i-class="{{curIndex == index ? 'setinfor': 'infor'}}">{{item}}</i-col>
+          <i-col wx:for="{{projectList}}" bindtap="gopage" wx:key="index" span="8" i-class="{{curIndex == index ? 'setinfor': 'infor'}}">{{item}}</i-col>
       </i-row>
      </view>
   </view>

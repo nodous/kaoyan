@@ -147,6 +147,11 @@ Page({
   continueMusic() {
     this.data.innerAudioContext.play()
   },
+  gopage () {
+    this.setData({
+      cur:1
+    })
+  },
   //播放音乐
   startMusic(){
     // 1. 获取数据库引用
