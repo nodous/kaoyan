@@ -13,10 +13,10 @@
 
 ## 参考文档
 
-<img src="http://ldods.com/githubImg/1.png"  height="420" width="210"/>
-<img src="http://ldods.com/githubImg/2.png"  height="420" width="210"/>
-<img src="http://ldods.com/githubImg/3.png"  height="420" width="210"/>
-<img src="http://ldods.com/githubImg/4.png"  height="420" width="210"/>
-<img src="http://ldods.com/githubImg/5.png"  height="420" width="210"/>
+<img src="http://ldods.com/githubImg/1.png"  height="420" width="290" style="display:inline-block"/>
+<img src="http://ldods.com/githubImg/2.png"  height="420" width="290" style="display:inline-block"/>
+<img src="http://ldods.com/githubImg/3.png"  height="420" width="290" style="display:inline-block"/>
+<img src="http://ldods.com/githubImg/4.png"  height="420" width="290" style="display:inline-block"/>
+<img src="http://ldods.com/githubImg/5.png"  height="420" width="290" style="display:inline-block"/>
 
 # kaoyan
